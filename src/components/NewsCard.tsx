@@ -1,0 +1,53 @@
+
+import React from 'react';
+import { Play } from 'lucide-react';
+
+interface NewsCardProps {
+  title: string;
+  image: string;
+  excerpt?: string;
+  isVideo?: boolean;
+  category?: string;
+  style?: React.CSSProperties;
+  className?: string;
+}
+
+const NewsCard: React.FC<NewsCardProps> = ({ 
+  title, 
+  image, 
+  excerpt, 
+  isVideo = false,
+  category,
+  style,
+  className = ""
+}) => {
+  return (
+    <div className={`bg-mdh-darkCard mb-4 overflow-hidden animate-fadeIn ${className}`} style={style}>
+      <div className={isVideo ? "video-thumb-overlay" : "relative"}>
+        <img 
+          src={image} 
+          alt={title} 
+          className="w-full h-auto object-cover" 
+          style={{ aspectRatio: "16/9" }}
+        />
+        {isVideo && (
+          <div className="play-button">
+            <Play fill="white" size={24} />
+          </div>
+        )}
+        {category && (
+          <span className="absolute top-2 left-2 bg-mdh-gold text-black text-xs px-2 py-1">
+            {category}
+          </span>
+        )}
+      </div>
+      <div className="p-3">
+        <h3 className="text-white text-sm md:text-base font-bold mb-2">{title}</h3>
+        {excerpt && <p className="text-gray-300 text-xs mb-3">{excerpt}</p>}
+        <a href="#" className="lire-plus">Lire Plus...</a>
+      </div>
+    </div>
+  );
+};
+
+export default NewsCard;
