@@ -1,12 +1,13 @@
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { 
   Carousel, 
   CarouselContent, 
   CarouselItem, 
   CarouselNext, 
-  CarouselPrevious 
+  CarouselPrevious,
+  type CarouselApi
 } from "@/components/ui/carousel";
 import { fetchLatestArticles, getArticleImage, stripHtmlTags, WordPressArticle } from '../services/wordpressService';
 
@@ -14,6 +15,7 @@ const HeroSection: React.FC = () => {
   const [articles, setArticles] = useState<WordPressArticle[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [api, setApi] = useState<CarouselApi | null>(null);
   const SLIDE_INTERVAL = 7000; // 7 seconds
 
   useEffect(() => {
@@ -28,16 +30,34 @@ const HeroSection: React.FC = () => {
   }, []);
 
   const handleNext = useCallback(() => {
+    if (!api) return;
+    api.scrollNext();
     setCurrentIndex((prev) => (prev + 1) % articles.length);
-  }, [articles.length]);
+  }, [api, articles.length]);
 
   const handlePrev = useCallback(() => {
+    if (!api) return;
+    api.scrollPrev();
     setCurrentIndex((prev) => (prev - 1 + articles.length) % articles.length);
-  }, [articles.length]);
+  }, [api, articles.length]);
+
+  // Update index when API changes slide
+  useEffect(() => {
+    if (!api) return;
+    
+    const onSelect = () => {
+      setCurrentIndex(api.selectedScrollSnap());
+    };
+    
+    api.on('select', onSelect);
+    return () => {
+      api.off('select', onSelect);
+    };
+  }, [api]);
 
   // Auto-slide functionality
   useEffect(() => {
-    if (articles.length === 0) return;
+    if (articles.length === 0 || !api) return;
     
     const intervalId = setInterval(() => {
       handleNext();
@@ -45,7 +65,7 @@ const HeroSection: React.FC = () => {
     
     // Clear interval on component unmount
     return () => clearInterval(intervalId);
-  }, [articles.length, handleNext]);
+  }, [articles.length, handleNext, api]);
 
   const formatExcerpt = (excerpt: string): string => {
     const plainText = stripHtmlTags(excerpt);
@@ -66,8 +86,7 @@ const HeroSection: React.FC = () => {
               align: "start",
               loop: true
             }}
-            value={currentIndex}
-            onValueChange={setCurrentIndex}
+            setApi={setApi}
           >
             <CarouselContent>
               {articles.map((article, index) => (
