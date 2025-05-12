@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Play } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface NewsCardProps {
   title: string;
@@ -10,6 +11,7 @@ interface NewsCardProps {
   category?: string;
   style?: React.CSSProperties;
   className?: string;
+  id?: number; // Pour les liens vers les articles
 }
 
 const NewsCard: React.FC<NewsCardProps> = ({ 
@@ -19,16 +21,20 @@ const NewsCard: React.FC<NewsCardProps> = ({
   isVideo = false,
   category,
   style,
-  className = ""
+  className = "",
+  id
 }) => {
-  return (
-    <div className={`bg-mdh-darkCard mb-4 overflow-hidden animate-fadeIn ${className}`} style={style}>
+  const renderContent = () => (
+    <>
       <div className={isVideo ? "video-thumb-overlay" : "relative"}>
         <img 
           src={image} 
           alt={title} 
           className="w-full h-auto object-cover" 
           style={{ aspectRatio: "16/9" }}
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = 'https://picsum.photos/seed/fallback/300/200';
+          }}
         />
         {isVideo && (
           <div className="play-button">
@@ -42,10 +48,28 @@ const NewsCard: React.FC<NewsCardProps> = ({
         )}
       </div>
       <div className="p-3">
-        <h3 className="text-white text-sm md:text-base font-bold mb-2">{title}</h3>
+        <h3 className="text-white text-sm md:text-base font-bold mb-2 hover:text-mdh-gold">{title}</h3>
         {excerpt && <p className="text-gray-300 text-xs mb-3">{excerpt}</p>}
-        <a href="#" className="lire-plus">Lire Plus...</a>
+        <span className="lire-plus">Lire Plus...</span>
       </div>
+    </>
+  );
+
+  if (id !== undefined) {
+    return (
+      <Link 
+        to={`/article/${id}`} 
+        className={`bg-mdh-darkCard mb-4 overflow-hidden animate-fadeIn block ${className}`}
+        style={style}
+      >
+        {renderContent()}
+      </Link>
+    );
+  }
+
+  return (
+    <div className={`bg-mdh-darkCard mb-4 overflow-hidden animate-fadeIn ${className}`} style={style}>
+      {renderContent()}
     </div>
   );
 };

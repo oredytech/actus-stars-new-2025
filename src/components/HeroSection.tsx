@@ -1,6 +1,6 @@
 
-import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { 
   Carousel, 
   CarouselContent, 
@@ -93,25 +93,29 @@ const HeroSection: React.FC = () => {
                 <CarouselItem key={article.id}>
                   <div className="grid md:grid-cols-2 gap-4 md:gap-6 items-center h-full">
                     <div className="text-white animate-slideIn">
-                      <h1 className="text-mdh-gold text-xl md:text-2xl font-bold mb-3" 
-                          dangerouslySetInnerHTML={{ __html: article.title.rendered }}>
-                      </h1>
+                      <Link to={`/article/${article.id}`}>
+                        <h1 className="text-mdh-gold text-xl md:text-2xl font-bold mb-3 hover:text-white" 
+                            dangerouslySetInnerHTML={{ __html: article.title.rendered }}>
+                        </h1>
+                      </Link>
                       <p className="text-sm md:text-base mb-3 line-clamp-4">
                         {formatExcerpt(article.excerpt.rendered)}
                       </p>
-                      <a href={article.link} target="_blank" rel="noopener noreferrer" className="lire-plus">
+                      <Link to={`/article/${article.id}`} className="lire-plus">
                         Lire Plus...
-                      </a>
+                      </Link>
                     </div>
                     <div className="animate-fadeIn max-h-[300px] overflow-hidden">
-                      <img 
-                        src={getArticleImage(article)} 
-                        alt={stripHtmlTags(article.title.rendered)} 
-                        className="w-full h-auto shadow-lg object-cover rounded-md max-h-[300px]"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = 'https://picsum.photos/600/400?grayscale';
-                        }}
-                      />
+                      <Link to={`/article/${article.id}`}>
+                        <img 
+                          src={getArticleImage(article)} 
+                          alt={stripHtmlTags(article.title.rendered)} 
+                          className="w-full h-auto shadow-lg object-cover rounded-md max-h-[300px]"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = 'https://picsum.photos/600/400?grayscale';
+                          }}
+                        />
+                      </Link>
                     </div>
                   </div>
                 </CarouselItem>

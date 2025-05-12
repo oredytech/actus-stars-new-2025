@@ -213,3 +213,52 @@
 .social-icon:hover {
   color: white;
 }
+
+/* Article content styling */
+.article-content {
+  @apply text-gray-200;
+}
+
+.article-content p {
+  @apply mb-4 leading-relaxed;
+}
+
+.article-content img {
+  @apply max-w-full h-auto my-4 rounded;
+}
+
+.article-content h2, .article-content h3, .article-content h4 {
+  @apply text-mdh-gold font-bold my-4;
+}
+
+.article-content h2 {
+  @apply text-xl md:text-2xl;
+}
+
+.article-content h3 {
+  @apply text-lg md:text-xl;
+}
+
+.article-content h4 {
+  @apply text-base md:text-lg;
+}
+
+.article-content a {
+  @apply text-mdh-gold hover:underline;
+}
+
+.article-content ul, .article-content ol {
+  @apply pl-5 mb-4;
+}
+
+.article-content li {
+  @apply mb-2;
+}
+
+.article-content blockquote {
+  @apply border-l-4 border-mdh-gold pl-4 italic my-4;
+}
+
+.article-content iframe {
+  @apply max-w-full my-4;
+}

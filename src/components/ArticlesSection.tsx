@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import SectionTitle from './SectionTitle';
 import NewsCard from './NewsCard';
 import { fetchLatestArticles, stripHtmlTags, getArticleImage, WordPressArticle } from '../services/wordpressService';
@@ -43,42 +44,50 @@ const ArticlesSection: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="md:w-1/3">
-                  <img 
-                    src={getArticleImage(articles[0])} 
-                    alt={stripHtmlTags(articles[0].title.rendered)}
-                    className="w-full h-auto"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://picsum.photos/seed/nord/300/200';
-                    }}
-                  />
+                  <Link to={`/article/${articles[0].id}`}>
+                    <img 
+                      src={getArticleImage(articles[0])} 
+                      alt={stripHtmlTags(articles[0].title.rendered)}
+                      className="w-full h-auto"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'https://picsum.photos/seed/nord/300/200';
+                      }}
+                    />
+                  </Link>
                 </div>
                 <div className="md:w-2/3">
-                  <h3 className="text-white font-bold mb-2" dangerouslySetInnerHTML={{ __html: articles[0].title.rendered }}></h3>
+                  <Link to={`/article/${articles[0].id}`}>
+                    <h3 className="text-white font-bold mb-2 hover:text-mdh-gold" dangerouslySetInnerHTML={{ __html: articles[0].title.rendered }}></h3>
+                  </Link>
                   <p className="text-gray-300 text-sm mb-3">
                     {formatExcerpt(articles[0].excerpt.rendered)}
                   </p>
-                  <a href={articles[0].link} target="_blank" rel="noopener noreferrer" className="lire-plus">Lire Plus...</a>
+                  <Link to={`/article/${articles[0].id}`} className="lire-plus">Lire Plus...</Link>
                 </div>
               </div>
               
               {articles.length > 1 && (
                 <div className="flex flex-col md:flex-row gap-4">
                   <div className="md:w-1/3">
-                    <img 
-                      src={getArticleImage(articles[1])}
-                      alt={stripHtmlTags(articles[1].title.rendered)}
-                      className="w-full h-auto"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = 'https://picsum.photos/seed/title/300/200';
-                      }}
-                    />
+                    <Link to={`/article/${articles[1].id}`}>
+                      <img 
+                        src={getArticleImage(articles[1])}
+                        alt={stripHtmlTags(articles[1].title.rendered)}
+                        className="w-full h-auto"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = 'https://picsum.photos/seed/title/300/200';
+                        }}
+                      />
+                    </Link>
                   </div>
                   <div className="md:w-2/3">
-                    <h3 className="text-white font-bold mb-2" dangerouslySetInnerHTML={{ __html: articles[1].title.rendered }}></h3>
+                    <Link to={`/article/${articles[1].id}`}>
+                      <h3 className="text-white font-bold mb-2 hover:text-mdh-gold" dangerouslySetInnerHTML={{ __html: articles[1].title.rendered }}></h3>
+                    </Link>
                     <p className="text-gray-300 text-sm mb-3">
                       {formatExcerpt(articles[1].excerpt.rendered)}
                     </p>
-                    <a href={articles[1].link} target="_blank" rel="noopener noreferrer" className="lire-plus">Lire Plus...</a>
+                    <Link to={`/article/${articles[1].id}`} className="lire-plus">Lire Plus...</Link>
                   </div>
                 </div>
               )}
@@ -89,6 +98,7 @@ const ArticlesSection: React.FC = () => {
             {articles.slice(2).map((article) => (
               <NewsCard 
                 key={article.id}
+                id={article.id}
                 title={stripHtmlTags(article.title.rendered)}
                 image={getArticleImage(article)}
                 excerpt={formatExcerpt(article.excerpt.rendered)}
