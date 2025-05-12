@@ -1,61 +1,107 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import SectionTitle from './SectionTitle';
 import NewsCard from './NewsCard';
+import { fetchLatestArticles, stripHtmlTags, getArticleImage, WordPressArticle } from '../services/wordpressService';
 
 const ArticlesSection: React.FC = () => {
-  const placeholderText = "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloremque error aliquam eveniet deleniti soluta. Neque...";
+  const [articles, setArticles] = useState<WordPressArticle[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  useEffect(() => {
+    const loadArticles = async () => {
+      setIsLoading(true);
+      // Fetch a larger number of articles to have enough after excluding the top 5
+      const fetchedArticles = await fetchLatestArticles(15);
+      
+      // Skip the first 5 articles (already shown in HeroSection)
+      const remainingArticles = fetchedArticles.slice(5);
+      
+      setArticles(remainingArticles);
+      setIsLoading(false);
+    };
+    
+    loadArticles();
+  }, []);
+
+  const formatExcerpt = (excerpt: string): string => {
+    const plainText = stripHtmlTags(excerpt);
+    return plainText.length > 100 ? plainText.substring(0, 100) + '...' : plainText;
+  };
   
   return (
     <section className="container mx-auto py-8 px-4">
       <SectionTitle title="DES ARTICLES" />
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="md:w-1/3">
-            <img 
-              src="https://picsum.photos/seed/nord/300/200" 
-              alt="Nord-Kivu" 
-              className="w-full h-auto"
-            />
-          </div>
-          <div className="md:w-2/3">
-            <h3 className="text-white font-bold mb-2">Nord-Kivu: « on n...</h3>
-            <p className="text-gray-300 text-sm mb-3">
-              Au lendemain de l'ordre de deuil national
-              décrété du Gouverneur militaire du
-              Nord-Kivu, une réunion s'est...
-            </p>
-            <button className="lire-plus">Lire Plus...</button>
-          </div>
+      {isLoading ? (
+        <div className="flex justify-center items-center h-32">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-mdh-gold"></div>
         </div>
-        
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="md:w-1/3">
-            <img 
-              src="https://picsum.photos/seed/title/300/200" 
-              alt="Article titre" 
-              className="w-full h-auto"
-            />
+      ) : articles.length > 0 ? (
+        <>
+          {articles.length >= 2 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="md:w-1/3">
+                  <img 
+                    src={getArticleImage(articles[0])} 
+                    alt={stripHtmlTags(articles[0].title.rendered)}
+                    className="w-full h-auto"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://picsum.photos/seed/nord/300/200';
+                    }}
+                  />
+                </div>
+                <div className="md:w-2/3">
+                  <h3 className="text-white font-bold mb-2" dangerouslySetInnerHTML={{ __html: articles[0].title.rendered }}></h3>
+                  <p className="text-gray-300 text-sm mb-3">
+                    {formatExcerpt(articles[0].excerpt.rendered)}
+                  </p>
+                  <a href={articles[0].link} target="_blank" rel="noopener noreferrer" className="lire-plus">Lire Plus...</a>
+                </div>
+              </div>
+              
+              {articles.length > 1 && (
+                <div className="flex flex-col md:flex-row gap-4">
+                  <div className="md:w-1/3">
+                    <img 
+                      src={getArticleImage(articles[1])}
+                      alt={stripHtmlTags(articles[1].title.rendered)}
+                      className="w-full h-auto"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'https://picsum.photos/seed/title/300/200';
+                      }}
+                    />
+                  </div>
+                  <div className="md:w-2/3">
+                    <h3 className="text-white font-bold mb-2" dangerouslySetInnerHTML={{ __html: articles[1].title.rendered }}></h3>
+                    <p className="text-gray-300 text-sm mb-3">
+                      {formatExcerpt(articles[1].excerpt.rendered)}
+                    </p>
+                    <a href={articles[1].link} target="_blank" rel="noopener noreferrer" className="lire-plus">Lire Plus...</a>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {articles.slice(2).map((article) => (
+              <NewsCard 
+                key={article.id}
+                title={stripHtmlTags(article.title.rendered)}
+                image={getArticleImage(article)}
+                excerpt={formatExcerpt(article.excerpt.rendered)}
+              />
+            ))}
           </div>
-          <div className="md:w-2/3">
-            <h3 className="text-white font-bold mb-2">Ceci est le titre de l'article...</h3>
-            <p className="text-gray-300 text-sm mb-3">{placeholderText}</p>
-            <button className="lire-plus">Lire Plus...</button>
-          </div>
+        </>
+      ) : (
+        <div className="text-center text-white py-12">
+          <h2 className="text-mdh-gold text-xl">Aucun article disponible</h2>
+          <p className="mt-2">Veuillez réessayer plus tard.</p>
         </div>
-      </div>
-      
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
-          <NewsCard 
-            key={item}
-            title="Ceci est le titre de l'article..."
-            image="/lovable-uploads/68ee4a49-d59b-44f2-9f7c-480ffddf05a8.png"
-            excerpt={placeholderText}
-          />
-        ))}
-      </div>
+      )}
     </section>
   );
 };
