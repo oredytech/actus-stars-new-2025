@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { 
   Carousel, 
@@ -14,6 +14,7 @@ const HeroSection: React.FC = () => {
   const [articles, setArticles] = useState<WordPressArticle[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const SLIDE_INTERVAL = 7000; // 7 seconds
 
   useEffect(() => {
     const loadArticles = async () => {
@@ -26,13 +27,25 @@ const HeroSection: React.FC = () => {
     loadArticles();
   }, []);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % articles.length);
-  };
+  }, [articles.length]);
 
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     setCurrentIndex((prev) => (prev - 1 + articles.length) % articles.length);
-  };
+  }, [articles.length]);
+
+  // Auto-slide functionality
+  useEffect(() => {
+    if (articles.length === 0) return;
+    
+    const intervalId = setInterval(() => {
+      handleNext();
+    }, SLIDE_INTERVAL);
+    
+    // Clear interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [articles.length, handleNext]);
 
   const formatExcerpt = (excerpt: string): string => {
     const plainText = stripHtmlTags(excerpt);
@@ -40,34 +53,42 @@ const HeroSection: React.FC = () => {
   };
 
   return (
-    <section className="relative w-full bg-black overflow-hidden" style={{ minHeight: "300px" }}>
-      <div className="container mx-auto py-8 px-4">
+    <section className="relative w-full bg-black overflow-hidden">
+      <div className="container mx-auto py-6 px-4">
         {isLoading ? (
-          <div className="flex justify-center items-center h-64">
+          <div className="flex justify-center items-center h-48 md:h-64">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-mdh-gold"></div>
           </div>
         ) : articles.length > 0 ? (
-          <Carousel className="w-full">
+          <Carousel 
+            className="w-full" 
+            opts={{ 
+              align: "start",
+              loop: true
+            }}
+            value={currentIndex}
+            onValueChange={setCurrentIndex}
+          >
             <CarouselContent>
               {articles.map((article, index) => (
                 <CarouselItem key={article.id}>
-                  <div className="grid md:grid-cols-2 gap-6 items-center">
+                  <div className="grid md:grid-cols-2 gap-4 md:gap-6 items-center h-full">
                     <div className="text-white animate-slideIn">
-                      <h1 className="text-mdh-gold text-xl md:text-2xl font-bold mb-4" 
+                      <h1 className="text-mdh-gold text-xl md:text-2xl font-bold mb-3" 
                           dangerouslySetInnerHTML={{ __html: article.title.rendered }}>
                       </h1>
-                      <p className="text-sm md:text-base mb-4">
+                      <p className="text-sm md:text-base mb-3 line-clamp-4">
                         {formatExcerpt(article.excerpt.rendered)}
                       </p>
                       <a href={article.link} target="_blank" rel="noopener noreferrer" className="lire-plus">
                         Lire Plus...
                       </a>
                     </div>
-                    <div className="animate-fadeIn">
+                    <div className="animate-fadeIn max-h-[300px] overflow-hidden">
                       <img 
                         src={getArticleImage(article)} 
                         alt={stripHtmlTags(article.title.rendered)} 
-                        className="w-full h-auto shadow-lg object-cover"
+                        className="w-full h-auto shadow-lg object-cover rounded-md max-h-[300px]"
                         onError={(e) => {
                           (e.target as HTMLImageElement).src = 'https://picsum.photos/600/400?grayscale';
                         }}
@@ -81,7 +102,7 @@ const HeroSection: React.FC = () => {
             <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2" onClick={handleNext} />
           </Carousel>
         ) : (
-          <div className="text-center text-white py-16">
+          <div className="text-center text-white py-12">
             <h2 className="text-mdh-gold text-xl">Aucun article disponible</h2>
             <p className="mt-2">Veuillez réessayer plus tard.</p>
           </div>
