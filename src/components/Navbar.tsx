@@ -21,13 +21,13 @@ const Navbar: React.FC = () => {
     <>
       <nav className="bg-black py-3 px-4 flex justify-between items-center sticky top-0 z-50 border-b border-mdh-red/30">
         <div className="flex items-center">
-          <div className="w-12 h-12 bg-mdh-red rounded-sm flex items-center justify-center">
-            <Link to="/" className="text-white font-bold text-xs">
-              MDH<span className="text-[8px] align-top">TV</span>
+          <div className="h-12 flex items-center justify-center mr-4">
+            <Link to="/" className="text-white font-bold">
+              <img src="/lovable-uploads/f8e8c16d-4fa9-4907-9f22-b589716b1360.png" alt="Actu Stars" className="h-10" />
             </Link>
           </div>
           <button 
-            className="ml-4 text-white p-2 hover:bg-mdh-red/20 rounded-full transition-colors"
+            className="text-white p-2 hover:bg-mdh-red/20 rounded-full transition-colors"
             onClick={toggleSidebar}
             aria-label="Menu"
           >
