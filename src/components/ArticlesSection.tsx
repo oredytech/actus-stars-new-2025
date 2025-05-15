@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import SectionTitle from './SectionTitle';
 import NewsCard from './NewsCard';
+import AdBanner from './AdBanner';
 import { fetchLatestArticles, stripHtmlTags, getArticleImage, WordPressArticle } from '../services/wordpressService';
 
 const ArticlesSection: React.FC = () => {
@@ -93,6 +94,9 @@ const ArticlesSection: React.FC = () => {
               )}
             </div>
           )}
+          
+          {/* Bannière publicitaire stratégiquement placée avant la grille d'articles */}
+          <AdBanner className="mb-8" />
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {articles.slice(2).map((article) => (
