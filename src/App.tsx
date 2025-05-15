@@ -8,6 +8,7 @@ import { useState, createContext } from "react";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ArticlePage from "./pages/ArticlePage";
+import SearchPage from "./pages/SearchPage";
 
 // Create a context for sharing category state
 export const CategoryContext = createContext<{
@@ -35,6 +36,7 @@ const App = () => {
               <Route path="/about" element={<Index />} />
               <Route path="/contacts" element={<Index />} />
               <Route path="/article/:id" element={<ArticlePage />} />
+              <Route path="/search" element={<SearchPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

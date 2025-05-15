@@ -69,6 +69,18 @@ export const fetchArticleById = async (id: number): Promise<WordPressArticle | n
   }
 };
 
+export const searchArticles = async (query: string): Promise<WordPressArticle[]> => {
+  try {
+    const response = await axios.get(
+      `https://actustars.net/wp-json/wp/v2/posts?_embed&search=${encodeURIComponent(query)}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error searching WordPress articles:', error);
+    return [];
+  }
+};
+
 export const getArticleImage = (article: WordPressArticle): string => {
   if (!article._embedded || !article._embedded['wp:featuredmedia']) {
     return 'https://picsum.photos/600/400?grayscale'; // Fallback image

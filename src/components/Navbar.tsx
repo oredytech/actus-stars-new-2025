@@ -1,13 +1,14 @@
 
 import React, { useState, useContext } from 'react';
 import { Menu, Search } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CategorySidebar from './CategorySidebar';
 import { CategoryContext } from '../App';
 
 const Navbar: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { selectedCategoryId, setSelectedCategoryId } = useContext(CategoryContext);
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -15,6 +16,10 @@ const Navbar: React.FC = () => {
 
   const handleCategorySelect = (categoryId: number) => {
     setSelectedCategoryId(categoryId === 0 ? null : categoryId);
+  };
+
+  const handleSearchClick = () => {
+    navigate('/search');
   };
 
   return (
@@ -42,7 +47,11 @@ const Navbar: React.FC = () => {
         </div>
         
         <div className="flex items-center">
-          <button className="w-8 h-8 bg-mdh-gold rounded-full flex items-center justify-center">
+          <button 
+            className="w-8 h-8 bg-mdh-gold rounded-full flex items-center justify-center hover:bg-mdh-gold/80 transition-colors"
+            onClick={handleSearchClick}
+            aria-label="Rechercher"
+          >
             <Search size={16} className="text-black" />
           </button>
         </div>
