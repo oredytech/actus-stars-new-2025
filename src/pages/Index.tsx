@@ -23,7 +23,7 @@ const Index: React.FC = () => {
         <HeroSection />
         <RecentNews />
         {selectedCategoryId !== null ? (
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-4 py-6">
             <CategoryArticles categoryId={selectedCategoryId} />
           </div>
         ) : (
