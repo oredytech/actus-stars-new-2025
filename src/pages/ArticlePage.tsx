@@ -4,6 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Share } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import ArticleContent from '../components/ArticleContent';
 import { 
   fetchArticleById, 
   WordPressArticle, 
@@ -142,10 +143,7 @@ const ArticlePage: React.FC = () => {
             
             <div className="prose prose-invert prose-md max-w-none">
               {article.content && (
-                <div 
-                  className="text-gray-200 leading-relaxed article-content"
-                  dangerouslySetInnerHTML={{ __html: article.content.rendered }}
-                />
+                <ArticleContent content={article.content.rendered} />
               )}
             </div>
           </article>
