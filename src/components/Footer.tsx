@@ -1,11 +1,8 @@
-
 import React from 'react';
 import { Phone, Home, Mail, Facebook, Twitter, Instagram } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
 const Footer: React.FC = () => {
-  return (
-    <footer className="bg-black py-8">
+  return <footer className="bg-black py-8">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
@@ -54,25 +51,17 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="text-white text-lg font-bold mb-4">Partenaires</h3>
             <div className="grid grid-cols-3 gap-2">
-              {[1, 2, 3, 4, 5, 6].map((item) => (
-                <div key={item} className="bg-mdh-red p-2 flex items-center justify-center">
-                  <img 
-                    src="/lovable-uploads/f8e8c16d-4fa9-4907-9f22-b589716b1360.png" 
-                    alt="Actu Stars" 
-                    className="h-8 w-auto"
-                  />
-                </div>
-              ))}
+              {[1, 2, 3, 4, 5, 6].map(item => <div key={item} className="bg-mdh-red p-2 flex items-center justify-center">
+                  <img src="/lovable-uploads/f8e8c16d-4fa9-4907-9f22-b589716b1360.png" alt="Actu Stars" className="h-8 w-auto" />
+                </div>)}
             </div>
           </div>
         </div>
         
         <div className="mt-8 pt-4 border-t border-gray-800 text-center text-gray-500 text-xs">
-          © 2023 Tout droit réservé : <span className="text-mdh-gold">Actu Stars</span> | Fièrement conçu par <span className="text-mdh-gold">Gordy TECHNOLOGIES</span>
+          © 2023 Tout droit réservé : <span className="text-mdh-gold">Oredy TECHNOLOGIES</span> | Fièrement conçu par <span className="text-mdh-gold">Gordy TECHNOLOGIES</span>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
