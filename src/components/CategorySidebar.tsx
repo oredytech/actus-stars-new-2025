@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import CategoryArticles from './CategoryArticles';
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface WordPressCategory {
   id: number;
@@ -36,6 +37,8 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({ isOpen, onClose }) =>
   const [error, setError] = useState<string | null>(null);
   const { selectedCategoryId, setSelectedCategoryId } = useContext(CategoryContext);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const isMobile = useIsMobile();
+  const [showCategoryList, setShowCategoryList] = useState(true);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -64,6 +67,16 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({ isOpen, onClose }) =>
 
   const handleCategoryClick = (categoryId: number) => {
     setSelectedCategoryId(categoryId === selectedCategoryId ? null : categoryId);
+    
+    // On mobile, hide the category list when a category is selected
+    if (isMobile && categoryId !== selectedCategoryId) {
+      setShowCategoryList(false);
+    }
+  };
+
+  // Toggle back to category list view on mobile
+  const showCategories = () => {
+    setShowCategoryList(true);
   };
 
   // Si le sidebar n'est pas ouvert, ne pas le rendre
@@ -76,7 +89,10 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({ isOpen, onClose }) =>
       
       <div className="w-full flex relative z-10">
         {/* Partie gauche : liste des catégories */}
-        <div className="w-64 bg-mdh-dark border-r border-mdh-red/30 overflow-auto flex flex-col">
+        <div 
+          className={`${isMobile && !showCategoryList ? 'hidden' : 'w-full md:w-64'} 
+            bg-mdh-dark border-r border-mdh-red/30 overflow-auto flex flex-col`}
+        >
           <div className="p-4 flex items-center justify-between border-b border-mdh-red/20">
             <h2 className="text-lg font-bold text-mdh-gold">Catégories</h2>
             <button 
@@ -162,9 +178,17 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({ isOpen, onClose }) =>
         </div>
 
         {/* Partie droite : articles de la catégorie sélectionnée */}
-        <div className="flex-1 bg-mdh-dark overflow-auto">
+        <div className={`${isMobile && showCategoryList ? 'hidden' : 'flex-1'} bg-mdh-dark overflow-auto`}>
           {selectedCategoryId !== null && (
             <div className="p-4">
+              {isMobile && (
+                <button 
+                  onClick={showCategories}
+                  className="mb-4 px-3 py-1.5 bg-mdh-red/20 text-white rounded-md flex items-center"
+                >
+                  &larr; Retour aux catégories
+                </button>
+              )}
               <CategoryArticles categoryId={selectedCategoryId} />
             </div>
           )}
