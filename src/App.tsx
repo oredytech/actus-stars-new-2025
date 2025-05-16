@@ -9,6 +9,8 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ArticlePage from "./pages/ArticlePage";
 import SearchPage from "./pages/SearchPage";
+import AboutPage from "./pages/AboutPage";
+import ContactPage from "./pages/ContactPage";
 
 // Create a context for sharing category state
 export const CategoryContext = createContext<{
@@ -33,8 +35,8 @@ const App = () => {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="/about" element={<Index />} />
-              <Route path="/contacts" element={<Index />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/contacts" element={<ContactPage />} />
               <Route path="/article/:id" element={<ArticlePage />} />
               <Route path="/search" element={<SearchPage />} />
               <Route path="*" element={<NotFound />} />
