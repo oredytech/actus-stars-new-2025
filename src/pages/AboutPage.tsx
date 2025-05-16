@@ -1,12 +1,9 @@
-
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Mail, Phone, Home } from 'lucide-react';
-
 const AboutPage: React.FC = () => {
-  return (
-    <div className="flex flex-col min-h-screen">
+  return <div className="flex flex-col min-h-screen">
       <Navbar />
       
       <main className="flex-grow container mx-auto px-4 py-8">
@@ -30,11 +27,7 @@ const AboutPage: React.FC = () => {
               </p>
             </div>
             <div className="flex items-center justify-center">
-              <img 
-                src="https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
-                alt="Notre équipe" 
-                className="rounded-lg max-h-80 object-cover shadow-xl" 
-              />
+              <img alt="Notre équipe" className="rounded-lg max-h-80 object-cover shadow-xl" src="/lovable-uploads/0f58d59a-8eaf-4f4d-82cc-606860861064.jpg" />
             </div>
           </div>
           
@@ -56,26 +49,18 @@ const AboutPage: React.FC = () => {
           
           <h2 className="text-2xl font-bold text-mdh-gold mt-8 mb-4">Notre équipe</h2>
           <div className="grid md:grid-cols-4 gap-6">
-            {[1, 2, 3, 4].map((member) => (
-              <div key={member} className="bg-black/70 p-4 rounded-md text-center border border-mdh-red/20">
+            {[1, 2, 3, 4].map(member => <div key={member} className="bg-black/70 p-4 rounded-md text-center border border-mdh-red/20">
                 <div className="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4">
-                  <img 
-                    src={`https://images.unsplash.com/photo-1${500 + member}?auto=format&fit=crop&w=200&h=200`}
-                    alt={`Membre de l'équipe ${member}`}
-                    className="w-full h-full object-cover"
-                  />
+                  <img src={`https://images.unsplash.com/photo-1${500 + member}?auto=format&fit=crop&w=200&h=200`} alt={`Membre de l'équipe ${member}`} className="w-full h-full object-cover" />
                 </div>
                 <h3 className="text-mdh-gold font-bold">Nom du Journaliste {member}</h3>
                 <p className="text-gray-400 text-sm">Poste / Spécialité</p>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
       </main>
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default AboutPage;
