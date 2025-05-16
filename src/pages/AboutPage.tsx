@@ -1,7 +1,9 @@
+
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Mail, Phone, Home } from 'lucide-react';
+
 const AboutPage: React.FC = () => {
   return <div className="flex flex-col min-h-screen">
       <Navbar />
@@ -49,13 +51,37 @@ const AboutPage: React.FC = () => {
           
           <h2 className="text-2xl font-bold text-mdh-gold mt-8 mb-4">Notre équipe</h2>
           <div className="grid md:grid-cols-4 gap-6">
-            {[1, 2, 3, 4].map(member => <div key={member} className="bg-black/70 p-4 rounded-md text-center border border-mdh-red/20">
-                <div className="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4">
-                  <img src={`https://images.unsplash.com/photo-1${500 + member}?auto=format&fit=crop&w=200&h=200`} alt={`Membre de l'équipe ${member}`} className="w-full h-full object-cover" />
-                </div>
-                <h3 className="text-mdh-gold font-bold">Nom du Journaliste {member}</h3>
-                <p className="text-gray-400 text-sm">Poste / Spécialité</p>
-              </div>)}
+            <div className="bg-black/70 p-4 rounded-md text-center border border-mdh-red/20">
+              <div className="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4">
+                <img src="https://images.unsplash.com/photo-1501?auto=format&fit=crop&w=200&h=200" alt="Francis KWIRAVIWE" className="w-full h-full object-cover" />
+              </div>
+              <h3 className="text-mdh-gold font-bold">Francis KWIRAVIWE</h3>
+              <p className="text-gray-400 text-sm">Initiateur-PDG</p>
+            </div>
+            
+            <div className="bg-black/70 p-4 rounded-md text-center border border-mdh-red/20">
+              <div className="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4">
+                <img src="https://images.unsplash.com/photo-1502?auto=format&fit=crop&w=200&h=200" alt="Jonathan KATALIKO" className="w-full h-full object-cover" />
+              </div>
+              <h3 className="text-mdh-gold font-bold">Jonathan KATALIKO</h3>
+              <p className="text-gray-400 text-sm">Rédacteur en chef</p>
+            </div>
+            
+            <div className="bg-black/70 p-4 rounded-md text-center border border-mdh-red/20">
+              <div className="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4">
+                <img src="https://images.unsplash.com/photo-1503?auto=format&fit=crop&w=200&h=200" alt="Souriante" className="w-full h-full object-cover" />
+              </div>
+              <h3 className="text-mdh-gold font-bold">Souriante</h3>
+              <p className="text-gray-400 text-sm">Rédactrice</p>
+            </div>
+            
+            <div className="bg-black/70 p-4 rounded-md text-center border border-mdh-red/20">
+              <div className="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4">
+                <img src="https://images.unsplash.com/photo-1504?auto=format&fit=crop&w=200&h=200" alt="AMULI Chérubin" className="w-full h-full object-cover" />
+              </div>
+              <h3 className="text-mdh-gold font-bold">AMULI Chérubin</h3>
+              <p className="text-gray-400 text-sm">Designer</p>
+            </div>
           </div>
         </div>
       </main>
@@ -63,4 +89,5 @@ const AboutPage: React.FC = () => {
       <Footer />
     </div>;
 };
+
 export default AboutPage;
