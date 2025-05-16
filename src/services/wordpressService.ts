@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 
 export interface WordPressMedia {
@@ -45,6 +44,21 @@ export interface WordPressArticle {
   };
 }
 
+export interface WordPressComment {
+  id: number;
+  author_name: string;
+  author_avatar_urls?: {
+    '24'?: string;
+    '48'?: string;
+    '96'?: string;
+  };
+  date: string;
+  content: {
+    rendered: string;
+  };
+  status: string;
+}
+
 export const fetchLatestArticles = async (count: number = 5): Promise<WordPressArticle[]> => {
   try {
     const response = await axios.get(
@@ -77,6 +91,54 @@ export const searchArticles = async (query: string): Promise<WordPressArticle[]>
     return response.data;
   } catch (error) {
     console.error('Error searching WordPress articles:', error);
+    return [];
+  }
+};
+
+export const fetchComments = async (postId: number, perPage: number = 5): Promise<WordPressComment[]> => {
+  try {
+    const response = await axios.get(
+      `https://actustars.net/wp-json/wp/v2/comments?post=${postId}&per_page=${perPage}&orderby=date&order=desc`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching comments for post ${postId}:`, error);
+    return [];
+  }
+};
+
+export const submitComment = async (postId: number, name: string, email: string, content: string): Promise<boolean> => {
+  try {
+    const response = await axios.post('https://actustars.net/wp-json/wp/v2/comments', {
+      post: postId,
+      author_name: name,
+      author_email: email,
+      content,
+    });
+    return !!response.data.id;
+  } catch (error) {
+    console.error('Error submitting comment:', error);
+    return false;
+  }
+};
+
+export const fetchSimilarArticles = async (categoryIds: number[], excludeId: number, count: number = 4): Promise<WordPressArticle[]> => {
+  if (categoryIds.length === 0) return [];
+  
+  try {
+    const params = new URLSearchParams({
+      _embed: '',
+      per_page: count.toString(),
+      exclude: excludeId.toString(),
+      categories: categoryIds.join(',')
+    });
+    
+    const response = await axios.get(
+      `https://actustars.net/wp-json/wp/v2/posts?${params.toString()}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching similar articles:', error);
     return [];
   }
 };
@@ -124,4 +186,11 @@ export const getArticleCategories = (article: WordPressArticle): string[] => {
     return [];
   }
   return article._embedded['wp:term'][0].map(term => term.name);
+};
+
+export const getCategoryIds = (article: WordPressArticle): number[] => {
+  if (!article._embedded || !article._embedded['wp:term'] || !article._embedded['wp:term'][0]) {
+    return [];
+  }
+  return article._embedded['wp:term'][0].map(term => term.id);
 };
