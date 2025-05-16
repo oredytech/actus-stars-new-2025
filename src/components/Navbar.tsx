@@ -7,15 +7,11 @@ import { CategoryContext } from '../App';
 
 const Navbar: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { selectedCategoryId, setSelectedCategoryId } = useContext(CategoryContext);
+  const { setSelectedCategoryId } = useContext(CategoryContext);
   const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
-  };
-
-  const handleCategorySelect = (categoryId: number) => {
-    setSelectedCategoryId(categoryId === 0 ? null : categoryId);
   };
 
   const handleSearchClick = () => {
@@ -60,16 +56,7 @@ const Navbar: React.FC = () => {
       <CategorySidebar 
         isOpen={isSidebarOpen} 
         onClose={() => setIsSidebarOpen(false)} 
-        onCategorySelect={handleCategorySelect} 
       />
-
-      {/* Overlay pour fermer la sidebar en cliquant à l'extérieur sur mobile */}
-      {isSidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
-          onClick={() => setIsSidebarOpen(false)}
-        ></div>
-      )}
     </>
   );
 };
