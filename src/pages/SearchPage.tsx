@@ -5,7 +5,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import NewsCard from '../components/NewsCard';
 import AdBanner from '../components/AdBanner';
-import { searchArticles, WordPressArticle } from '../services/wordpressService';
+import { searchArticles, WordPressArticle, getArticleImage, stripHtmlTags, getArticleCategories } from '../services/wordpressService';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
@@ -96,8 +96,12 @@ const SearchPage: React.FC = () => {
                 {results.slice(0, 3).map((article) => (
                   <NewsCard 
                     key={article.id}
-                    article={article}
-                    imageHeight="h-48"
+                    id={article.id}
+                    title={article.title.rendered}
+                    image={getArticleImage(article)}
+                    excerpt={stripHtmlTags(article.excerpt.rendered)}
+                    category={getArticleCategories(article)[0] || ''}
+                    className="h-full"
                   />
                 ))}
               </div>
@@ -109,8 +113,12 @@ const SearchPage: React.FC = () => {
                     {results.slice(3).map((article) => (
                       <NewsCard 
                         key={article.id}
-                        article={article}
-                        imageHeight="h-48"
+                        id={article.id}
+                        title={article.title.rendered}
+                        image={getArticleImage(article)}
+                        excerpt={stripHtmlTags(article.excerpt.rendered)}
+                        category={getArticleCategories(article)[0] || ''}
+                        className="h-full"
                       />
                     ))}
                   </div>
