@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -9,27 +8,32 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
-
 const ContactPage: React.FC = () => {
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
-  const { toast } = useToast();
-
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: {
+      errors
+    }
+  } = useForm();
+  const {
+    toast
+  } = useToast();
   const onSubmit = (data: any) => {
     console.log(data);
     toast({
       title: "Message envoyé",
-      description: "Nous vous répondrons dans les plus brefs délais.",
+      description: "Nous vous répondrons dans les plus brefs délais."
     });
     reset();
   };
-
-  return (
-    <div className="flex flex-col min-h-screen">
+  return <div className="flex flex-col min-h-screen">
       <Navbar />
       
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="bg-black/50 p-6 rounded-lg shadow-lg mb-8">
-          <h1 className="text-3xl font-bold text-mdh-gold mb-6">Contactez-nous</h1>
+          <h1 className="text-3xl font-bold text-mdh-gold mb-6 text-center">Contactez-nous</h1>
           
           <div className="grid md:grid-cols-2 gap-8">
             <div>
@@ -84,61 +88,38 @@ const ContactPage: React.FC = () => {
                   <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="name" className="text-white">Nom complet</Label>
-                      <Input 
-                        id="name" 
-                        {...register("name", { required: "Le nom est requis" })}
-                        className="bg-gray-800 border-gray-700 text-white"
-                        placeholder="Votre nom complet"
-                      />
-                      {errors.name && (
-                        <p className="text-red-500 text-sm">{errors.name.message as string}</p>
-                      )}
+                      <Input id="name" {...register("name", {
+                      required: "Le nom est requis"
+                    })} className="bg-gray-800 border-gray-700 text-white" placeholder="Votre nom complet" />
+                      {errors.name && <p className="text-red-500 text-sm">{errors.name.message as string}</p>}
                     </div>
                     
                     <div className="space-y-2">
                       <Label htmlFor="email" className="text-white">Email</Label>
-                      <Input 
-                        id="email" 
-                        type="email"
-                        {...register("email", { 
-                          required: "L'email est requis",
-                          pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                            message: "Adresse email invalide"
-                          }
-                        })}
-                        className="bg-gray-800 border-gray-700 text-white"
-                        placeholder="votre@email.com"
-                      />
-                      {errors.email && (
-                        <p className="text-red-500 text-sm">{errors.email.message as string}</p>
-                      )}
+                      <Input id="email" type="email" {...register("email", {
+                      required: "L'email est requis",
+                      pattern: {
+                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                        message: "Adresse email invalide"
+                      }
+                    })} className="bg-gray-800 border-gray-700 text-white" placeholder="votre@email.com" />
+                      {errors.email && <p className="text-red-500 text-sm">{errors.email.message as string}</p>}
                     </div>
                     
                     <div className="space-y-2">
                       <Label htmlFor="subject" className="text-white">Sujet</Label>
-                      <Input 
-                        id="subject" 
-                        {...register("subject", { required: "Le sujet est requis" })}
-                        className="bg-gray-800 border-gray-700 text-white"
-                        placeholder="Sujet de votre message"
-                      />
-                      {errors.subject && (
-                        <p className="text-red-500 text-sm">{errors.subject.message as string}</p>
-                      )}
+                      <Input id="subject" {...register("subject", {
+                      required: "Le sujet est requis"
+                    })} className="bg-gray-800 border-gray-700 text-white" placeholder="Sujet de votre message" />
+                      {errors.subject && <p className="text-red-500 text-sm">{errors.subject.message as string}</p>}
                     </div>
                     
                     <div className="space-y-2">
                       <Label htmlFor="message" className="text-white">Message</Label>
-                      <textarea 
-                        id="message" 
-                        {...register("message", { required: "Le message est requis" })}
-                        className="w-full rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-white h-32"
-                        placeholder="Votre message ici..."
-                      />
-                      {errors.message && (
-                        <p className="text-red-500 text-sm">{errors.message.message as string}</p>
-                      )}
+                      <textarea id="message" {...register("message", {
+                      required: "Le message est requis"
+                    })} className="w-full rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-white h-32" placeholder="Votre message ici..." />
+                      {errors.message && <p className="text-red-500 text-sm">{errors.message.message as string}</p>}
                     </div>
                     
                     <Button type="submit" className="bg-mdh-gold hover:bg-mdh-gold/80 text-black w-full">
@@ -148,24 +129,13 @@ const ContactPage: React.FC = () => {
                 </CardContent>
               </Card>
               
-              <div className="mt-6">
-                <h2 className="text-xl font-bold text-mdh-gold mb-4">Notre localisation</h2>
-                <div className="bg-gray-700 h-64 rounded-lg overflow-hidden">
-                  <img 
-                    src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=800&h=400"
-                    alt="Carte de localisation" 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
+              
             </div>
           </div>
         </div>
       </main>
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default ContactPage;
