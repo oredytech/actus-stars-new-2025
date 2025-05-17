@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useContext } from 'react';
-import { X, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { X, Facebook, Twitter, Instagram, Linkedin, Menu } from 'lucide-react';
 import axios from 'axios';
 import { CategoryContext } from '../App';
 import {
@@ -179,6 +179,17 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({ isOpen, onClose }) =>
 
         {/* Partie droite : articles de la catégorie sélectionnée */}
         <div className={`${isMobile && showCategoryList ? 'hidden' : 'flex-1'} bg-mdh-dark overflow-auto`}>
+          {/* Menu icon to show sidebar on mobile */}
+          {isMobile && !showCategoryList && (
+            <button
+              onClick={showCategories}
+              className="fixed top-20 left-4 z-50 p-3 bg-mdh-red/80 text-white rounded-full shadow-md"
+              aria-label="Ouvrir les catégories"
+            >
+              <Menu size={20} />
+            </button>
+          )}
+          
           {selectedCategoryId !== null && (
             <div className="p-4">
               {isMobile && (
