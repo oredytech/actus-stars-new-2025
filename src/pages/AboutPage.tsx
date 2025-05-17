@@ -78,7 +78,7 @@ const AboutPage: React.FC = () => {
             
             <div className="bg-black/70 p-4 rounded-md text-center border border-mdh-red/20">
               <div className="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4">
-                <img src="/lovable-uploads/68892db3-e676-45e0-90ea-2a65131807a3.png" alt="GARRIX" className="w-full h-full object-cover" />
+                <img src="/lovable-uploads/d60bc9c7-28a8-4a8c-bf80-1f3a52c7c7f3.png" alt="GARRIX" className="w-full h-full object-cover" />
               </div>
               <h3 className="text-mdh-gold font-bold">GARRIX</h3>
               <p className="text-gray-400 text-sm">Designer</p>
@@ -101,17 +101,6 @@ const AboutPage: React.FC = () => {
               </div>
               <h3 className="text-mdh-gold font-bold">Charline MAKASI</h3>
               <p className="text-gray-400 text-sm">Directrice des finances et marketing</p>
-            </div>
-            
-            <div className="bg-black/70 p-4 rounded-md text-center border border-mdh-red/20">
-              <div className="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4">
-                <Avatar className="w-full h-full">
-                  <AvatarImage src="" alt="Oredy MUSANDA" />
-                  <AvatarFallback>OM</AvatarFallback>
-                </Avatar>
-              </div>
-              <h3 className="text-mdh-gold font-bold">Oredy MUSANDA</h3>
-              <p className="text-gray-400 text-sm">Webmaster</p>
             </div>
           </div>
         </div>
