@@ -1,6 +1,8 @@
+
 import React from 'react';
 import { Phone, Home, Mail, Facebook, Twitter, Instagram } from 'lucide-react';
 import { Link } from 'react-router-dom';
+
 const Footer: React.FC = () => {
   return <footer className="bg-black py-8">
       <div className="container mx-auto px-4">
@@ -59,9 +61,10 @@ const Footer: React.FC = () => {
         </div>
         
         <div className="mt-8 pt-4 border-t border-gray-800 text-center text-gray-500 text-xs">
-          © 2023 Tout droit réservé : <span className="text-mdh-gold">Oredy TECHNOLOGIES</span> | Fièrement conçu par <span className="text-mdh-gold">Gordy TECHNOLOGIES</span>
+          @ 2025 Tout droit réservé : <span className="text-mdh-gold">Actus Stars</span> | Fièrement conçu par <span className="text-mdh-gold">Oredy TECHNOLOGIES</span> (<a href="https://www.oredytech.com" target="_blank" rel="noopener noreferrer" className="text-mdh-gold hover:underline">www.oredytech.com</a>)
         </div>
       </div>
     </footer>;
 };
+
 export default Footer;
