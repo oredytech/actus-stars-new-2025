@@ -20,7 +20,7 @@ const Index: React.FC = () => {
         <HeroSection />
         <RecentNews />
         <div className="container mx-auto px-4">
-          <AdBanner className="my-8" />
+          <AdBanner className="my-8" variant="large" />
         </div>
         <ArticlesSection />
       </main>

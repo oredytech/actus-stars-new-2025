@@ -18,11 +18,11 @@ const ArticleContent: React.FC<ArticleContentProps> = ({ content }) => {
     return <div dangerouslySetInnerHTML={{ __html: content }} />;
   }
   
-  // Sinon, insérer la publicité après le 2ème paragraphe
+  // Sinon, insérer la publicité après le 2ème paragraphe avec la variante large
   return (
     <div className="article-content">
       <div dangerouslySetInnerHTML={{ __html: paragraphs.slice(0, 2).join('') }} />
-      <AdBanner />
+      <AdBanner variant="large" />
       <div dangerouslySetInnerHTML={{ __html: paragraphs.slice(2).join('') }} />
     </div>
   );
