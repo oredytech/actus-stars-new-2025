@@ -1,8 +1,9 @@
 
 import React, { useState, useEffect, useContext } from 'react';
-import { X, Facebook, Twitter, Instagram, Linkedin, Menu } from 'lucide-react';
+import { X, Facebook, Twitter, Instagram, Linkedin, Menu, Home, Mail, Info } from 'lucide-react';
 import axios from 'axios';
 import { CategoryContext } from '../App';
+import { Link } from 'react-router-dom';
 import {
   Sidebar,
   SidebarContent,
@@ -14,6 +15,7 @@ import {
   SidebarMenuButton,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarSeparator,
 } from "@/components/ui/sidebar";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import CategoryArticles from './CategoryArticles';
@@ -82,6 +84,13 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({ isOpen, onClose }) =>
   // Si le sidebar n'est pas ouvert, ne pas le rendre
   if (!isOpen) return null;
 
+  // Navigation items for the sidebar
+  const navigationItems = [
+    { title: 'Accueil', icon: Home, path: '/' },
+    { title: 'A propos de nous', icon: Info, path: '/about' },
+    { title: 'Contacts', icon: Mail, path: '/contacts' }
+  ];
+
   return (
     <div className="fixed inset-0 z-40 flex">
       {/* Overlay pour fermer sur mobile */}
@@ -135,6 +144,28 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({ isOpen, onClose }) =>
                 ))}
               </ul>
             )}
+
+            {/* Séparateur et liens de navigation pour mobile */}
+            <div className="md:hidden mt-4">
+              <div className="h-px bg-mdh-red/30 mx-4"></div>
+              <div className="pt-2 pb-1 px-4">
+                <h3 className="text-sm font-medium text-mdh-gold">Navigation</h3>
+              </div>
+              <ul className="space-y-1">
+                {navigationItems.map((item) => (
+                  <li key={item.title}>
+                    <Link 
+                      to={item.path}
+                      className="flex items-center px-4 py-2 text-white hover:bg-mdh-red/10 transition-colors"
+                      onClick={onClose}
+                    >
+                      <item.icon size={18} className="mr-2 text-mdh-gold" />
+                      {item.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
           
           {/* Social Media Buttons */}
