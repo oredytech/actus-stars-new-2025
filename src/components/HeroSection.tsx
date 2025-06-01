@@ -83,9 +83,32 @@ const HeroSection: React.FC = () => {
     return plainText.length > 150 ? plainText.substring(0, 150) + '...' : plainText;
   };
 
+  // Get current background image
+  const getCurrentBackgroundImage = () => {
+    if (articles.length > 0 && articles[currentIndex]) {
+      return getArticleImage(articles[currentIndex]);
+    }
+    return null;
+  };
+
   return (
     <section className="relative w-full bg-black overflow-hidden">
-      <div className="container mx-auto py-6 px-4">
+      {/* Background image with opacity */}
+      {getCurrentBackgroundImage() && (
+        <div 
+          className="absolute inset-0 bg-cover bg-center transition-all duration-1000 ease-in-out"
+          style={{
+            backgroundImage: `url(${getCurrentBackgroundImage()})`,
+            opacity: 0.8,
+            zIndex: 1
+          }}
+        />
+      )}
+      
+      {/* Dark overlay to ensure text readability */}
+      <div className="absolute inset-0 bg-black/50 z-10" />
+      
+      <div className="relative z-20 container mx-auto py-6 px-4">
         {isLoading ? (
           <div className="flex justify-center items-center h-48 md:h-64">
             <LoadingSpinner size="lg" />
