@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
@@ -6,6 +5,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ArticleContent from '../components/ArticleContent';
 import ArticleSidebar from '../components/article/ArticleSidebar';
+import LoadingSpinner from '../components/LoadingSpinner';
 import { 
   fetchArticleById, 
   WordPressArticle, 
@@ -20,13 +20,17 @@ const ArticlePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [article, setArticle] = useState<WordPressArticle | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadArticle = async () => {
       setIsLoading(true);
+      setError(null);
       window.scrollTo(0, 0);
       
       if (!id) {
+        setError("Aucun identifiant d'article trouvé");
+        setIsLoading(false);
         toast({
           title: "Erreur",
           description: "Aucun identifiant d'article trouvé",
@@ -35,21 +39,31 @@ const ArticlePage: React.FC = () => {
         return;
       }
 
-      const articleId = parseInt(id);
-      const fetchedArticle = await fetchArticleById(articleId);
-      
-      if (fetchedArticle) {
-        setArticle(fetchedArticle);
-        document.title = `MDHTV - ${fetchedArticle.title.rendered}`;
-      } else {
+      try {
+        const articleId = parseInt(id);
+        if (isNaN(articleId)) {
+          throw new Error("Identifiant d'article invalide");
+        }
+
+        const fetchedArticle = await fetchArticleById(articleId);
+        
+        if (fetchedArticle) {
+          setArticle(fetchedArticle);
+          document.title = `MDHTV - ${fetchedArticle.title.rendered}`;
+        } else {
+          throw new Error("Article non trouvé");
+        }
+      } catch (err) {
+        console.error('Error loading article:', err);
+        setError(err instanceof Error ? err.message : "Erreur lors du chargement de l'article");
         toast({
           title: "Erreur",
-          description: "Article non trouvé",
+          description: "Impossible de charger l'article. Veuillez réessayer.",
           variant: "destructive",
         });
+      } finally {
+        setIsLoading(false);
       }
-      
-      setIsLoading(false);
     };
     
     loadArticle();
@@ -61,7 +75,23 @@ const ArticlePage: React.FC = () => {
       <main className="flex-grow">
         {isLoading ? (
           <div className="container mx-auto py-12 flex justify-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-mdh-gold"></div>
+            <LoadingSpinner size="lg" />
+          </div>
+        ) : error ? (
+          <div className="container mx-auto py-12 text-center">
+            <h2 className="text-mdh-red text-2xl mb-4">Erreur de chargement</h2>
+            <p className="text-white mb-6">{error}</p>
+            <div className="space-x-4">
+              <button 
+                onClick={() => window.location.reload()} 
+                className="lire-plus"
+              >
+                Réessayer
+              </button>
+              <Link to="/" className="lire-plus">
+                Retour à l'accueil
+              </Link>
+            </div>
           </div>
         ) : article ? (
           <div className="container mx-auto py-6 px-4">

@@ -1,10 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import NewsCard from '../components/NewsCard';
 import AdBanner from '../components/AdBanner';
+import LoadingSpinner from '../components/LoadingSpinner';
 import { searchArticles, WordPressArticle, getArticleImage, stripHtmlTags, getArticleCategories } from '../services/wordpressService';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,7 @@ const SearchPage: React.FC = () => {
   const [results, setResults] = useState<WordPressArticle[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [noResults, setNoResults] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSearch = async (e?: React.FormEvent) => {
     if (e) {
@@ -26,14 +27,16 @@ const SearchPage: React.FC = () => {
     
     setIsLoading(true);
     setNoResults(false);
+    setError(null);
     setSearchParams({ q: query });
     
     try {
       const articles = await searchArticles(query);
       setResults(articles);
       setNoResults(articles.length === 0);
-    } catch (error) {
-      console.error('Search error:', error);
+    } catch (err) {
+      console.error('Search error:', err);
+      setError('Erreur lors de la recherche. Veuillez réessayer.');
     } finally {
       setIsLoading(false);
     }
@@ -74,21 +77,31 @@ const SearchPage: React.FC = () => {
           
           {isLoading && (
             <div className="py-20 text-center">
-              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-mdh-gold border-r-transparent align-[-0.125em]" role="status">
-                <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
-              </div>
+              <LoadingSpinner size="lg" />
               <p className="mt-4 text-gray-600">Recherche en cours...</p>
             </div>
           )}
 
-          {!isLoading && noResults && query && (
+          {error && (
+            <div className="py-20 text-center">
+              <p className="text-lg font-medium text-red-600 mb-4">{error}</p>
+              <button 
+                onClick={() => handleSearch()} 
+                className="lire-plus"
+              >
+                Réessayer
+              </button>
+            </div>
+          )}
+
+          {!isLoading && !error && noResults && query && (
             <div className="py-20 text-center">
               <p className="text-lg font-medium">Aucun résultat trouvé pour "{query}"</p>
               <p className="mt-2 text-gray-600">Essayez avec d'autres mots-clés</p>
             </div>
           )}
 
-          {!isLoading && results.length > 0 && (
+          {!isLoading && !error && results.length > 0 && (
             <>
               <p className="mb-4 text-gray-700">{results.length} résultats trouvés pour "{query}"</p>
               

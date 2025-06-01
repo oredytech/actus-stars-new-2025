@@ -1,26 +1,34 @@
-
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import SectionTitle from './SectionTitle';
 import NewsCard from './NewsCard';
 import AdBanner from './AdBanner';
+import LoadingSpinner from './LoadingSpinner';
 import { fetchLatestArticles, stripHtmlTags, getArticleImage, WordPressArticle } from '../services/wordpressService';
 
 const ArticlesSection: React.FC = () => {
   const [articles, setArticles] = useState<WordPressArticle[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   
   useEffect(() => {
     const loadArticles = async () => {
       setIsLoading(true);
-      // Fetch a larger number of articles to have enough after excluding the top 5
-      const fetchedArticles = await fetchLatestArticles(15);
-      
-      // Skip the first 5 articles (already shown in HeroSection)
-      const remainingArticles = fetchedArticles.slice(5);
-      
-      setArticles(remainingArticles);
-      setIsLoading(false);
+      setError(null);
+      try {
+        // Fetch a larger number of articles to have enough after excluding the top 5
+        const fetchedArticles = await fetchLatestArticles(15);
+        
+        // Skip the first 5 articles (already shown in HeroSection)
+        const remainingArticles = fetchedArticles.slice(5);
+        
+        setArticles(remainingArticles);
+      } catch (err) {
+        console.error('Error loading articles section:', err);
+        setError("Erreur lors du chargement des articles");
+      } finally {
+        setIsLoading(false);
+      }
     };
     
     loadArticles();
@@ -37,7 +45,18 @@ const ArticlesSection: React.FC = () => {
       
       {isLoading ? (
         <div className="flex justify-center items-center h-32">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-mdh-gold"></div>
+          <LoadingSpinner size="md" />
+        </div>
+      ) : error ? (
+        <div className="text-center py-12">
+          <h2 className="text-mdh-red text-xl mb-4">Erreur de chargement</h2>
+          <p className="text-white mb-6">{error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="lire-plus"
+          >
+            Réessayer
+          </button>
         </div>
       ) : articles.length > 0 ? (
         <>

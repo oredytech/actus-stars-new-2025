@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { 
@@ -9,11 +8,13 @@ import {
   CarouselPrevious,
   type CarouselApi
 } from "@/components/ui/carousel";
+import LoadingSpinner from './LoadingSpinner';
 import { fetchLatestArticles, getArticleImage, stripHtmlTags, WordPressArticle } from '../services/wordpressService';
 
 const HeroSection: React.FC = () => {
   const [articles, setArticles] = useState<WordPressArticle[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [api, setApi] = useState<CarouselApi | null>(null);
   const SLIDE_INTERVAL = 7000; // 7 seconds
@@ -21,9 +22,19 @@ const HeroSection: React.FC = () => {
   useEffect(() => {
     const loadArticles = async () => {
       setIsLoading(true);
-      const fetchedArticles = await fetchLatestArticles(5);
-      setArticles(fetchedArticles);
-      setIsLoading(false);
+      setError(null);
+      try {
+        const fetchedArticles = await fetchLatestArticles(5);
+        if (fetchedArticles.length === 0) {
+          throw new Error("Aucun article disponible");
+        }
+        setArticles(fetchedArticles);
+      } catch (err) {
+        console.error('Error loading hero articles:', err);
+        setError(err instanceof Error ? err.message : "Erreur lors du chargement");
+      } finally {
+        setIsLoading(false);
+      }
     };
     
     loadArticles();
@@ -77,7 +88,18 @@ const HeroSection: React.FC = () => {
       <div className="container mx-auto py-6 px-4">
         {isLoading ? (
           <div className="flex justify-center items-center h-48 md:h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-mdh-gold"></div>
+            <LoadingSpinner size="lg" />
+          </div>
+        ) : error ? (
+          <div className="text-center text-white py-12">
+            <h2 className="text-mdh-red text-xl mb-4">Erreur de chargement</h2>
+            <p className="mt-2 mb-4">{error}</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="lire-plus"
+            >
+              Réessayer
+            </button>
           </div>
         ) : articles.length > 0 ? (
           <Carousel 

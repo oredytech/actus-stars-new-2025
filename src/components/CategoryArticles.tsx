@@ -1,9 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { WordPressArticle, getArticleImage, stripHtmlTags } from '../services/wordpressService';
 import NewsCard from './NewsCard';
 import SectionTitle from './SectionTitle';
+import LoadingSpinner from './LoadingSpinner';
 import {
   Pagination,
   PaginationContent,
@@ -34,6 +34,7 @@ const CategoryArticles: React.FC<CategoryArticlesProps> = ({ categoryId }) => {
   useEffect(() => {
     const fetchArticles = async () => {
       setLoading(true);
+      setError(null);
       try {
         let endpoint = `https://actustars.net/wp-json/wp/v2/posts?_embed&per_page=${articlesPerPage}&page=${currentPage}`;
         
@@ -41,8 +42,13 @@ const CategoryArticles: React.FC<CategoryArticlesProps> = ({ categoryId }) => {
           endpoint += `&categories=${categoryId}`;
           
           // Fetch category name
-          const categoryResponse = await axios.get(`https://actustars.net/wp-json/wp/v2/categories/${categoryId}`);
-          setCategoryName(categoryResponse.data.name);
+          try {
+            const categoryResponse = await axios.get(`https://actustars.net/wp-json/wp/v2/categories/${categoryId}`);
+            setCategoryName(categoryResponse.data.name);
+          } catch (catError) {
+            console.error('Error fetching category name:', catError);
+            setCategoryName(`Catégorie ${categoryId}`);
+          }
         } else {
           setCategoryName("Tous les articles");
         }
@@ -54,10 +60,10 @@ const CategoryArticles: React.FC<CategoryArticlesProps> = ({ categoryId }) => {
         const totalPagesHeader = response.headers['x-wp-totalpages'];
         setTotalPages(parseInt(totalPagesHeader) || 1);
         
-        setLoading(false);
       } catch (error) {
         console.error('Error fetching articles:', error);
-        setError('Impossible de charger les articles');
+        setError('Impossible de charger les articles. Veuillez réessayer.');
+      } finally {
         setLoading(false);
       }
     };
@@ -77,15 +83,21 @@ const CategoryArticles: React.FC<CategoryArticlesProps> = ({ categoryId }) => {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[300px]">
-        <div className="text-white">Chargement des articles...</div>
+        <LoadingSpinner size="md" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex justify-center items-center min-h-[300px]">
-        <div className="text-mdh-red">{error}</div>
+      <div className="flex flex-col justify-center items-center min-h-[300px] text-center">
+        <div className="text-mdh-red mb-4">{error}</div>
+        <button 
+          onClick={() => window.location.reload()} 
+          className="lire-plus"
+        >
+          Réessayer
+        </button>
       </div>
     );
   }
