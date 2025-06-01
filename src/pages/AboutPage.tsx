@@ -1,12 +1,52 @@
-
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import TeamMember from '../components/TeamMember';
 import { Mail, Phone, Home } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const AboutPage: React.FC = () => {
-  return <div className="flex flex-col min-h-screen">
+  const teamMembers = [
+    {
+      name: "Francis KWIRAVIWE",
+      role: "Initiateur-PDG",
+      image: "/lovable-uploads/fdf5d024-749d-4b2e-b719-cca80f15acc2.png",
+      fallback: "FK"
+    },
+    {
+      name: "Jonathan KATALIKO",
+      role: "Rédacteur en chef",
+      image: "/lovable-uploads/2bbf522e-3451-4372-9877-1176c1e748fd.png",
+      fallback: "JK"
+    },
+    {
+      name: "Souriante TASENYA",
+      role: "Rédactrice",
+      image: "/lovable-uploads/d8e3b31f-389a-4f56-a436-50b2a0277d25.png",
+      fallback: "ST"
+    },
+    {
+      name: "GARRIX",
+      role: "Designer",
+      image: "/lovable-uploads/d60bc9c7-28a8-4a8c-bf80-1f3a52c7c7f3.png",
+      fallback: "GX"
+    },
+    {
+      name: "Chérubin AMULI",
+      role: "Designer adjoint",
+      image: "/lovable-uploads/6f74b948-6209-41a4-991c-c8da2fc6f125.png",
+      fallback: "CA"
+    },
+    {
+      name: "Charline MAKASI",
+      role: "Directrice des finances et marketing",
+      image: "/lovable-uploads/f8e8c16d-4fa9-4907-9f22-b589716b1360.png",
+      fallback: "CM"
+    }
+  ];
+
+  return (
+    <div className="flex flex-col min-h-screen">
       <Navbar />
       
       <main className="flex-grow container mx-auto px-4 py-8">
@@ -52,62 +92,22 @@ const AboutPage: React.FC = () => {
           
           <h2 className="text-2xl font-bold text-mdh-gold mt-8 mb-4">Notre équipe</h2>
           <div className="grid md:grid-cols-3 lg:grid-cols-6 gap-6">
-            <div className="bg-black/70 p-4 rounded-md text-center border border-mdh-red/20">
-              <div className="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4">
-                <img src="/lovable-uploads/fdf5d024-749d-4b2e-b719-cca80f15acc2.png" alt="Francis KWIRAVIWE" className="w-full h-full object-cover" />
-              </div>
-              <h3 className="text-mdh-gold font-bold">Francis KWIRAVIWE</h3>
-              <p className="text-gray-400 text-sm">Initiateur-PDG</p>
-            </div>
-            
-            <div className="bg-black/70 p-4 rounded-md text-center border border-mdh-red/20">
-              <div className="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4">
-                <img src="/lovable-uploads/2bbf522e-3451-4372-9877-1176c1e748fd.png" alt="Jonathan KATALIKO" className="w-full h-full object-cover" />
-              </div>
-              <h3 className="text-mdh-gold font-bold">Jonathan KATALIKO</h3>
-              <p className="text-gray-400 text-sm">Rédacteur en chef</p>
-            </div>
-            
-            <div className="bg-black/70 p-4 rounded-md text-center border border-mdh-red/20">
-              <div className="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4">
-                <img src="/lovable-uploads/d8e3b31f-389a-4f56-a436-50b2a0277d25.png" alt="Souriante TASENYA" className="w-full h-full object-cover" />
-              </div>
-              <h3 className="text-mdh-gold font-bold">Souriante TASENYA</h3>
-              <p className="text-gray-400 text-sm">Rédactrice</p>
-            </div>
-            
-            <div className="bg-black/70 p-4 rounded-md text-center border border-mdh-red/20">
-              <div className="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4">
-                <img src="/lovable-uploads/d60bc9c7-28a8-4a8c-bf80-1f3a52c7c7f3.png" alt="GARRIX" className="w-full h-full object-cover" />
-              </div>
-              <h3 className="text-mdh-gold font-bold">GARRIX</h3>
-              <p className="text-gray-400 text-sm">Designer</p>
-            </div>
-            
-            <div className="bg-black/70 p-4 rounded-md text-center border border-mdh-red/20">
-              <div className="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4">
-                <img src="/lovable-uploads/6f74b948-6209-41a4-991c-c8da2fc6f125.png" alt="Chérubin AMULI" className="w-full h-full object-cover" />
-              </div>
-              <h3 className="text-mdh-gold font-bold">Chérubin AMULI</h3>
-              <p className="text-gray-400 text-sm">Designer adjoint</p>
-            </div>
-            
-            <div className="bg-black/70 p-4 rounded-md text-center border border-mdh-red/20">
-              <div className="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4">
-                <Avatar className="w-full h-full">
-                  <AvatarImage src="/lovable-uploads/f8e8c16d-4fa9-4907-9f22-b589716b1360.png" alt="Charline MAKASI" />
-                  <AvatarFallback>CM</AvatarFallback>
-                </Avatar>
-              </div>
-              <h3 className="text-mdh-gold font-bold">Charline MAKASI</h3>
-              <p className="text-gray-400 text-sm">Directrice des finances et marketing</p>
-            </div>
+            {teamMembers.map((member) => (
+              <TeamMember
+                key={member.name}
+                name={member.name}
+                role={member.role}
+                image={member.image}
+                fallback={member.fallback}
+              />
+            ))}
           </div>
         </div>
       </main>
       
       <Footer />
-    </div>;
+    </div>
+  );
 };
 
 export default AboutPage;

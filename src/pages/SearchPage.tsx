@@ -1,14 +1,12 @@
+
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import NewsCard from '../components/NewsCard';
-import AdBanner from '../components/AdBanner';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { searchArticles, WordPressArticle, getArticleImage, stripHtmlTags, getArticleCategories } from '../services/wordpressService';
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
+import SearchForm from '../components/SearchForm';
+import SearchResults from '../components/SearchResults';
+import { searchArticles, WordPressArticle } from '../services/wordpressService';
 
 const SearchPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -43,7 +41,6 @@ const SearchPage: React.FC = () => {
   };
 
   useEffect(() => {
-    // On page load, if there's a query param, perform search
     const initialQuery = searchParams.get('q');
     if (initialQuery) {
       setQuery(initialQuery);
@@ -61,19 +58,12 @@ const SearchPage: React.FC = () => {
         <div className="max-w-4xl mx-auto mb-8">
           <h1 className="text-3xl font-bold mb-6 text-center">Rechercher des Articles</h1>
           
-          <form onSubmit={handleSearch} className="flex gap-2 mb-8">
-            <Input
-              type="search"
-              placeholder="Que recherchez-vous ?"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className="flex-grow"
-            />
-            <Button type="submit" disabled={isLoading}>
-              <Search className="mr-2" />
-              {isLoading ? 'Recherche...' : 'Rechercher'}
-            </Button>
-          </form>
+          <SearchForm
+            query={query}
+            isLoading={isLoading}
+            onQueryChange={setQuery}
+            onSubmit={handleSearch}
+          />
           
           {isLoading && (
             <div className="py-20 text-center">
@@ -101,43 +91,8 @@ const SearchPage: React.FC = () => {
             </div>
           )}
 
-          {!isLoading && !error && results.length > 0 && (
-            <>
-              <p className="mb-4 text-gray-700">{results.length} résultats trouvés pour "{query}"</p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {results.slice(0, 3).map((article) => (
-                  <NewsCard 
-                    key={article.id}
-                    id={article.id}
-                    title={article.title.rendered}
-                    image={getArticleImage(article)}
-                    excerpt={stripHtmlTags(article.excerpt.rendered)}
-                    category={getArticleCategories(article)[0] || ''}
-                    className="h-full"
-                  />
-                ))}
-              </div>
-              
-              {results.length > 3 && (
-                <div className="my-8">
-                  <AdBanner className="mb-8" />
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {results.slice(3).map((article) => (
-                      <NewsCard 
-                        key={article.id}
-                        id={article.id}
-                        title={article.title.rendered}
-                        image={getArticleImage(article)}
-                        excerpt={stripHtmlTags(article.excerpt.rendered)}
-                        category={getArticleCategories(article)[0] || ''}
-                        className="h-full"
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-            </>
+          {!isLoading && !error && (
+            <SearchResults results={results} query={query} />
           )}
         </div>
       </main>
