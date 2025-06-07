@@ -1,33 +1,70 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import SectionTitle from './SectionTitle';
-import NewsCard from './NewsCard';
+import YouTubeVideoCard from './YouTubeVideoCard';
+import AdBanner from './AdBanner';
+import LoadingSpinner from './LoadingSpinner';
+import { fetchLatestYouTubeVideos, YouTubeVideo } from '../services/youtubeService';
 
 const RecentNews: React.FC = () => {
+  const [videos, setVideos] = useState<YouTubeVideo[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadVideos = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const fetchedVideos = await fetchLatestYouTubeVideos(3);
+        setVideos(fetchedVideos);
+      } catch (err) {
+        console.error('Error loading YouTube videos:', err);
+        setError("Erreur lors du chargement des vidéos");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadVideos();
+  }, []);
+
   return (
     <section className="container mx-auto py-8 px-4">
       <SectionTitle title="DERNIEREMENT SUR LA CHAINE" />
       
-      <div className="grid md:grid-cols-3 gap-4">
-        <NewsCard 
-          title="BIBLIOTHÈQUE AUDIO" 
-          image="https://picsum.photos/seed/audio/600/400"
-          isVideo={true}
-        />
-        
-        <NewsCard 
-          title="KIVU SÉLECTION" 
-          image="https://picsum.photos/seed/kivu/600/400"
-          isVideo={true}
-        />
-        
-        <NewsCard 
-          title="Comment connecter facilement votre PC..." 
-          image="https://picsum.photos/seed/wifi/600/400"
-          excerpt="Vous avez du mal à connecter votre PC à votre nouveau projecteur 5G WiFi parce qu'il n'a pas de ports HDMI ni VGA ? Pas de..."
-          isVideo={true}
-        />
-      </div>
+      {isLoading ? (
+        <div className="flex justify-center items-center h-32">
+          <LoadingSpinner size="md" />
+        </div>
+      ) : error ? (
+        <div className="text-center py-12">
+          <h2 className="text-mdh-red text-xl mb-4">Erreur de chargement</h2>
+          <p className="text-white mb-6">{error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="lire-plus"
+          >
+            Réessayer
+          </button>
+        </div>
+      ) : videos.length > 0 ? (
+        <>
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            {videos.map((video) => (
+              <YouTubeVideoCard key={video.id} video={video} />
+            ))}
+          </div>
+          
+          {/* Petite bannière publicitaire */}
+          <AdBanner variant="small" className="mt-4" />
+        </>
+      ) : (
+        <div className="text-center text-white py-12">
+          <h2 className="text-mdh-gold text-xl">Aucune vidéo disponible</h2>
+          <p className="mt-2">Veuillez réessayer plus tard.</p>
+        </div>
+      )}
     </section>
   );
 };
