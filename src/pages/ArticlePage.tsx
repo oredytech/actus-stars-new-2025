@@ -1,6 +1,7 @@
+
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Eye } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ArticleContent from '../components/ArticleContent';
@@ -12,7 +13,8 @@ import {
   getArticleImage,
   formatDate,
   getArticleAuthor,
-  getArticleCategories
+  getArticleCategories,
+  getArticleViews
 } from '../services/wordpressService';
 import { toast } from '../components/ui/use-toast';
 
@@ -117,6 +119,13 @@ const ArticlePage: React.FC = () => {
                       <span className="mr-1">Par:</span>
                       <span>{getArticleAuthor(article)}</span>
                     </div>
+
+                    {getArticleViews(article) > 0 && (
+                      <div className="flex items-center">
+                        <Eye className="mr-1 h-4 w-4" />
+                        <span>{getArticleViews(article)} vues</span>
+                      </div>
+                    )}
                     
                     {getArticleCategories(article).length > 0 && (
                       <div className="flex items-center flex-wrap gap-2">

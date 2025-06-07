@@ -19,6 +19,7 @@ export interface WordPressArticle {
     rendered: string;
   };
   link: string;
+  post_views_count?: number; // For Post Views Counter plugin
   _embedded?: {
     'wp:featuredmedia'?: Array<{
       source_url: string;
@@ -109,10 +110,10 @@ export const searchArticles = async (query: string): Promise<WordPressArticle[]>
   }
 };
 
-export const fetchComments = async (postId: number, perPage: number = 5): Promise<WordPressComment[]> => {
+export const fetchComments = async (postId: number, perPage: number = 3): Promise<WordPressComment[]> => {
   try {
     const response = await axios.get(
-      `https://actustars.net/wp-json/wp/v2/comments?post=${postId}&per_page=${perPage}&orderby=date&order=desc`
+      `https://actustars.net/wp-json/wp/v2/comments?post=${postId}&per_page=${perPage}&orderby=date&order=desc&status=approved`
     );
     return response.data;
   } catch (error) {
@@ -155,6 +156,10 @@ export const fetchSimilarArticles = async (categoryIds: number[], excludeId: num
     console.error('Error fetching similar articles:', error);
     return [];
   }
+};
+
+export const getArticleViews = (article: WordPressArticle): number => {
+  return article.post_views_count || 0;
 };
 
 export const getArticleImage = (article: WordPressArticle): string => {
@@ -207,4 +212,9 @@ export const getCategoryIds = (article: WordPressArticle): number[] => {
     return [];
   }
   return article._embedded['wp:term'][0].map(term => term.id);
+};
+
+// Convertir l'URL vers actustars.net
+export const convertToActuStarsUrl = (originalUrl: string, slug: string): string => {
+  return `https://actustars.net/${slug}`;
 };

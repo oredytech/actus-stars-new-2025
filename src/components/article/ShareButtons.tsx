@@ -3,24 +3,27 @@ import React from 'react';
 import { Share, MessageCircle, ExternalLink } from 'lucide-react';
 import { Button } from '../ui/button';
 import { toast } from '../ui/use-toast';
+import { convertToActuStarsUrl } from '../../services/wordpressService';
 
 interface ShareButtonsProps {
   title: string;
   url: string;
+  slug: string;
 }
 
-const ShareButtons: React.FC<ShareButtonsProps> = ({ title, url }) => {
-  const encodedUrl = encodeURIComponent(url);
+const ShareButtons: React.FC<ShareButtonsProps> = ({ title, url, slug }) => {
+  const actuStarsUrl = convertToActuStarsUrl(url, slug);
+  const encodedUrl = encodeURIComponent(actuStarsUrl);
   const encodedTitle = encodeURIComponent(title);
   
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
         title,
-        url,
+        url: actuStarsUrl,
       }).catch((error) => console.log('Erreur de partage:', error));
     } else {
-      navigator.clipboard.writeText(url);
+      navigator.clipboard.writeText(actuStarsUrl);
       toast({
         title: "Lien copié",
         description: "Le lien de l'article a été copié dans votre presse-papiers",
@@ -69,7 +72,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ title, url }) => {
         </a>
         
         <a 
-          href={`mailto:?subject=${encodedTitle}&body=Check out this article: ${encodedUrl}`}
+          href={`mailto:?subject=${encodedTitle}&body=Consultez cet article: ${actuStarsUrl}`}
           className="flex items-center justify-center gap-2 bg-gray-600 text-white p-2 rounded-md hover:bg-gray-600/80 text-sm"
         >
           <ExternalLink size={16} />
