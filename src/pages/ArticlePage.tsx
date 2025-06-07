@@ -7,7 +7,7 @@ import ArticleContent from '../components/ArticleContent';
 import ArticleSidebar from '../components/article/ArticleSidebar';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { 
-  fetchArticleById, 
+  fetchArticleBySlug, 
   WordPressArticle, 
   getArticleImage,
   formatDate,
@@ -17,7 +17,7 @@ import {
 import { toast } from '../components/ui/use-toast';
 
 const ArticlePage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const { slug } = useParams<{ slug: string }>();
   const [article, setArticle] = useState<WordPressArticle | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -28,24 +28,19 @@ const ArticlePage: React.FC = () => {
       setError(null);
       window.scrollTo(0, 0);
       
-      if (!id) {
-        setError("Aucun identifiant d'article trouvé");
+      if (!slug) {
+        setError("Aucun slug d'article trouvé");
         setIsLoading(false);
         toast({
           title: "Erreur",
-          description: "Aucun identifiant d'article trouvé",
+          description: "Aucun slug d'article trouvé",
           variant: "destructive",
         });
         return;
       }
 
       try {
-        const articleId = parseInt(id);
-        if (isNaN(articleId)) {
-          throw new Error("Identifiant d'article invalide");
-        }
-
-        const fetchedArticle = await fetchArticleById(articleId);
+        const fetchedArticle = await fetchArticleBySlug(slug);
         
         if (fetchedArticle) {
           setArticle(fetchedArticle);
@@ -67,7 +62,7 @@ const ArticlePage: React.FC = () => {
     };
     
     loadArticle();
-  }, [id]);
+  }, [slug]);
 
   return (
     <div className="min-h-screen flex flex-col bg-mdh-dark">

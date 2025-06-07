@@ -11,7 +11,8 @@ interface NewsCardProps {
   category?: string;
   style?: React.CSSProperties;
   className?: string;
-  id?: number; // Pour les liens vers les articles
+  id?: number;
+  slug?: string;
 }
 
 const NewsCard: React.FC<NewsCardProps> = ({ 
@@ -22,7 +23,8 @@ const NewsCard: React.FC<NewsCardProps> = ({
   category,
   style,
   className = "",
-  id
+  id,
+  slug
 }) => {
   const renderContent = () => (
     <>
@@ -55,22 +57,16 @@ const NewsCard: React.FC<NewsCardProps> = ({
     </>
   );
 
-  if (id !== undefined) {
-    return (
-      <Link 
-        to={`/article/${id}`} 
-        className={`bg-mdh-darkCard mb-4 overflow-hidden animate-fadeIn block ${className}`}
-        style={style}
-      >
-        {renderContent()}
-      </Link>
-    );
-  }
+  const linkPath = slug || (id ? `/article/${id}` : '#');
 
   return (
-    <div className={`bg-mdh-darkCard mb-4 overflow-hidden animate-fadeIn ${className}`} style={style}>
+    <Link 
+      to={linkPath} 
+      className={`bg-mdh-darkCard mb-4 overflow-hidden animate-fadeIn block ${className}`}
+      style={style}
+    >
       {renderContent()}
-    </div>
+    </Link>
   );
 };
 

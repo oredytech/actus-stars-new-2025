@@ -64,7 +64,7 @@ const ArticlesSection: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="md:w-1/3">
-                  <Link to={`/article/${articles[0].id}`}>
+                  <Link to={`/${articles[0].slug}`}>
                     <img 
                       src={getArticleImage(articles[0])} 
                       alt={stripHtmlTags(articles[0].title.rendered)}
@@ -76,20 +76,20 @@ const ArticlesSection: React.FC = () => {
                   </Link>
                 </div>
                 <div className="md:w-2/3">
-                  <Link to={`/article/${articles[0].id}`}>
+                  <Link to={`/${articles[0].slug}`}>
                     <h3 className="text-white font-bold mb-2 hover:text-mdh-gold" dangerouslySetInnerHTML={{ __html: articles[0].title.rendered }}></h3>
                   </Link>
                   <p className="text-gray-300 text-sm mb-3">
                     {formatExcerpt(articles[0].excerpt.rendered)}
                   </p>
-                  <Link to={`/article/${articles[0].id}`} className="lire-plus">Lire Plus...</Link>
+                  <Link to={`/${articles[0].slug}`} className="lire-plus">Lire Plus...</Link>
                 </div>
               </div>
               
               {articles.length > 1 && (
                 <div className="flex flex-col md:flex-row gap-4">
                   <div className="md:w-1/3">
-                    <Link to={`/article/${articles[1].id}`}>
+                    <Link to={`/${articles[1].slug}`}>
                       <img 
                         src={getArticleImage(articles[1])}
                         alt={stripHtmlTags(articles[1].title.rendered)}
@@ -101,13 +101,13 @@ const ArticlesSection: React.FC = () => {
                     </Link>
                   </div>
                   <div className="md:w-2/3">
-                    <Link to={`/article/${articles[1].id}`}>
+                    <Link to={`/${articles[1].slug}`}>
                       <h3 className="text-white font-bold mb-2 hover:text-mdh-gold" dangerouslySetInnerHTML={{ __html: articles[1].title.rendered }}></h3>
                     </Link>
                     <p className="text-gray-300 text-sm mb-3">
                       {formatExcerpt(articles[1].excerpt.rendered)}
                     </p>
-                    <Link to={`/article/${articles[1].id}`} className="lire-plus">Lire Plus...</Link>
+                    <Link to={`/${articles[1].slug}`} className="lire-plus">Lire Plus...</Link>
                   </div>
                 </div>
               )}
@@ -121,7 +121,7 @@ const ArticlesSection: React.FC = () => {
             {articles.slice(2).map((article) => (
               <NewsCard 
                 key={article.id}
-                id={article.id}
+                slug={article.slug}
                 title={stripHtmlTags(article.title.rendered)}
                 image={getArticleImage(article)}
                 excerpt={formatExcerpt(article.excerpt.rendered)}

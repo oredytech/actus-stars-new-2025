@@ -138,7 +138,7 @@ const HeroSection: React.FC = () => {
                 <CarouselItem key={article.id}>
                   <div className="grid md:grid-cols-2 gap-4 md:gap-6 items-center h-full">
                     <div className="text-white animate-slideIn">
-                      <Link to={`/article/${article.id}`}>
+                      <Link to={`/${article.slug}`}>
                         <h1 className="text-mdh-gold text-xl md:text-2xl font-bold mb-3 hover:text-white" 
                             dangerouslySetInnerHTML={{ __html: article.title.rendered }}>
                         </h1>
@@ -146,12 +146,12 @@ const HeroSection: React.FC = () => {
                       <p className="text-sm md:text-base mb-3 line-clamp-4">
                         {formatExcerpt(article.excerpt.rendered)}
                       </p>
-                      <Link to={`/article/${article.id}`} className="lire-plus">
+                      <Link to={`/${article.slug}`} className="lire-plus">
                         Lire Plus...
                       </Link>
                     </div>
                     <div className="animate-fadeIn max-h-[300px] overflow-hidden">
-                      <Link to={`/article/${article.id}`}>
+                      <Link to={`/${article.slug}`}>
                         <img 
                           src={getArticleImage(article)} 
                           alt={stripHtmlTags(article.title.rendered)} 

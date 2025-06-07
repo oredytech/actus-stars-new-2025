@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 
 export interface WordPressMedia {
@@ -7,6 +8,7 @@ export interface WordPressMedia {
 export interface WordPressArticle {
   id: number;
   date: string;
+  slug: string;
   title: {
     rendered: string;
   };
@@ -68,6 +70,18 @@ export const fetchLatestArticles = async (count: number = 5): Promise<WordPressA
   } catch (error) {
     console.error('Error fetching WordPress articles:', error);
     return [];
+  }
+};
+
+export const fetchArticleBySlug = async (slug: string): Promise<WordPressArticle | null> => {
+  try {
+    const response = await axios.get(
+      `https://actustars.net/wp-json/wp/v2/posts?_embed&slug=${slug}`
+    );
+    return response.data[0] || null;
+  } catch (error) {
+    console.error(`Error fetching article with slug ${slug}:`, error);
+    return null;
   }
 };
 
