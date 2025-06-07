@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ArticleContent from '../components/ArticleContent';
 import ArticleSidebar from '../components/article/ArticleSidebar';
+import SimilarArticlesSection from '../components/article/SimilarArticlesSection';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { 
   fetchArticleBySlug, 
@@ -159,6 +160,8 @@ const ArticlePage: React.FC = () => {
                     <ArticleContent content={article.content.rendered} />
                   )}
                 </div>
+
+                <SimilarArticlesSection article={article} />
               </article>
               
               <aside className="lg:w-80 w-full">

@@ -14,7 +14,6 @@ import { Eye } from 'lucide-react';
 import CommentsList from './CommentsList';
 import CommentForm from './CommentForm';
 import ShareButtons from './ShareButtons';
-import SimilarArticles from './SimilarArticles';
 
 interface ArticleSidebarProps {
   article: WordPressArticle;
@@ -22,9 +21,7 @@ interface ArticleSidebarProps {
 
 const ArticleSidebar: React.FC<ArticleSidebarProps> = ({ article }) => {
   const [comments, setComments] = useState<WordPressComment[]>([]);
-  const [similarArticles, setSimilarArticles] = useState<WordPressArticle[]>([]);
   const [isLoadingComments, setIsLoadingComments] = useState(true);
-  const [isLoadingSimilar, setIsLoadingSimilar] = useState(true);
 
   useEffect(() => {
     const loadComments = async () => {
@@ -34,16 +31,7 @@ const ArticleSidebar: React.FC<ArticleSidebarProps> = ({ article }) => {
       setIsLoadingComments(false);
     };
 
-    const loadSimilarArticles = async () => {
-      setIsLoadingSimilar(true);
-      const categoryIds = getCategoryIds(article);
-      const fetchedArticles = await fetchSimilarArticles(categoryIds, article.id);
-      setSimilarArticles(fetchedArticles);
-      setIsLoadingSimilar(false);
-    };
-
     loadComments();
-    loadSimilarArticles();
   }, [article.id]);
 
   const handleCommentSubmit = async (name: string, email: string, content: string) => {
@@ -59,7 +47,7 @@ const ArticleSidebar: React.FC<ArticleSidebarProps> = ({ article }) => {
   const articleViews = getArticleViews(article);
 
   return (
-    <div className="space-y-6 w-full max-w-sm">
+    <div className="space-y-6 w-full max-w-sm sticky top-6">
       <Card className="bg-mdh-darkCard border-gray-700">
         <CardHeader>
           <CardTitle className="text-xl text-white">Partagez cet article</CardTitle>
@@ -94,15 +82,6 @@ const ArticleSidebar: React.FC<ArticleSidebarProps> = ({ article }) => {
         </CardHeader>
         <CardContent>
           <CommentForm postId={article.id} onCommentSubmit={handleCommentSubmit} />
-        </CardContent>
-      </Card>
-
-      <Card className="bg-mdh-darkCard border-gray-700">
-        <CardHeader>
-          <CardTitle className="text-xl text-white">Articles similaires</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <SimilarArticles articles={similarArticles} isLoading={isLoadingSimilar} />
         </CardContent>
       </Card>
     </div>
