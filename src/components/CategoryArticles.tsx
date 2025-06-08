@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { WordPressArticle, getArticleImage, stripHtmlTags } from '../services/wordpressService';
@@ -111,7 +110,6 @@ const CategoryArticles: React.FC<CategoryArticlesProps> = ({ categoryId }) => {
     );
   }
 
-  // Generate pagination items
   const generatePaginationItems = () => {
     const items = [];
     const maxVisiblePages = 5;
@@ -224,7 +222,7 @@ const CategoryArticles: React.FC<CategoryArticlesProps> = ({ categoryId }) => {
         {articles.map((article) => (
           <NewsCard
             key={article.id}
-            slug={article.slug}
+            slug={`/${article.slug}`}
             title={article.title.rendered}
             image={getArticleImage(article)}
             excerpt={truncateExcerpt(article.excerpt.rendered)}

@@ -22,7 +22,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ results, query }) => {
         {results.slice(0, 3).map((article) => (
           <NewsCard 
             key={article.id}
-            slug={article.slug}
+            slug={`/${article.slug}`}
             title={article.title.rendered}
             image={getArticleImage(article)}
             excerpt={stripHtmlTags(article.excerpt.rendered)}
@@ -39,7 +39,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ results, query }) => {
             {results.slice(3).map((article) => (
               <NewsCard 
                 key={article.id}
-                slug={article.slug}
+                slug={`/${article.slug}`}
                 title={article.title.rendered}
                 image={getArticleImage(article)}
                 excerpt={stripHtmlTags(article.excerpt.rendered)}

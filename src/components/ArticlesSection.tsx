@@ -121,7 +121,7 @@ const ArticlesSection: React.FC = () => {
             {articles.slice(2).map((article) => (
               <NewsCard 
                 key={article.id}
-                slug={article.slug}
+                slug={`/${article.slug}`}
                 title={stripHtmlTags(article.title.rendered)}
                 image={getArticleImage(article)}
                 excerpt={formatExcerpt(article.excerpt.rendered)}

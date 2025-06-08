@@ -39,7 +39,7 @@ const SimilarArticles: React.FC<SimilarArticlesProps> = ({ articles, isLoading }
       {articles.map(article => (
         <NewsCard 
           key={article.id}
-          slug={article.slug}
+          slug={`/${article.slug}`}
           title={article.title.rendered}
           image={getArticleImage(article)}
           excerpt={stripHtmlTags(article.excerpt.rendered).substring(0, 80) + '...'}
