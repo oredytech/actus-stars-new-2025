@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { WordPressArticle, getArticleImage, stripHtmlTags } from '../services/wordpressService';
@@ -223,7 +224,7 @@ const CategoryArticles: React.FC<CategoryArticlesProps> = ({ categoryId }) => {
         {articles.map((article) => (
           <NewsCard
             key={article.id}
-            id={article.id}
+            slug={article.slug}
             title={article.title.rendered}
             image={getArticleImage(article)}
             excerpt={truncateExcerpt(article.excerpt.rendered)}
