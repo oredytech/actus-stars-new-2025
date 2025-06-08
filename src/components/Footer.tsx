@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Phone, Home, Mail, Facebook, Twitter, Instagram } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -51,16 +52,24 @@ const Footer: React.FC = () => {
           
           <div>
             <h3 className="text-white text-lg font-bold mb-4">Partenaires</h3>
-            <div className="grid grid-cols-3 gap-2">
-              {[1, 2, 3, 4, 5, 6].map(item => <div key={item} className="bg-mdh-red p-2 flex items-center justify-center">
-                  <img src="/lovable-uploads/f8e8c16d-4fa9-4907-9f22-b589716b1360.png" alt="Actu Stars" className="h-8 w-auto" />
-                </div>)}
+            <div className="relative overflow-hidden">
+              <div className="flex animate-[scroll_20s_linear_infinite] space-x-4">
+                {[...Array(12)].map((_, index) => (
+                  <div key={index} className="flex-shrink-0 w-16 h-16 bg-gray-800 p-2 rounded flex items-center justify-center">
+                    <img 
+                      src="/lovable-uploads/f8e8c16d-4fa9-4907-9f22-b589716b1360.png" 
+                      alt="Partenaire" 
+                      className="h-8 w-auto opacity-70 hover:opacity-100 transition-opacity"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
         
         <div className="mt-8 pt-4 border-t border-gray-800 text-center text-gray-500 text-xs">
-          @ 2025 Tout droit réservé : <span className="text-mdh-gold">Actus Stars</span> | Fièrement conçu par <span className="text-mdh-gold">Oredy TECHNOLOGIES</span> (<a href="https://www.oredytech.com" target="_blank" rel="noopener noreferrer" className="text-mdh-gold hover:underline">www.oredytech.com</a>)
+          @ 2025 Tout droit réservé : <span className="text-mdh-gold">Actus Stars</span> | Fièrement conçu par <a href="https://www.oredytech.com" target="_blank" rel="noopener noreferrer" className="text-mdh-gold hover:underline">Oredy TECHNOLOGIES</a> (www.oredytech.com)
         </div>
       </div>
     </footer>;

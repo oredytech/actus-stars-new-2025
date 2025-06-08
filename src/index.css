@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -261,4 +262,14 @@
 
 .article-content iframe {
   @apply max-w-full my-4;
+}
+
+/* Animation pour le défilement des partenaires */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
