@@ -1,10 +1,9 @@
-
 import React from 'react';
 import { Phone, Home, Mail, Facebook, Twitter, Instagram } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
-  return <footer className="bg-black py-8">
+  return <footer className="bg-black py-8 mb-10">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
