@@ -24,7 +24,7 @@ const SearchForm: React.FC<SearchFormProps> = ({
         placeholder="Que recherchez-vous ?"
         value={query}
         onChange={(e) => onQueryChange(e.target.value)}
-        className="flex-grow"
+        className="flex-grow text-gray-800 placeholder:text-gray-500"
       />
       <Button type="submit" disabled={isLoading}>
         <Search className="mr-2" />

@@ -56,7 +56,7 @@ const SearchPage: React.FC = () => {
       <Navbar />
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto mb-8">
-          <h1 className="text-3xl font-bold mb-6 text-center">Rechercher des Articles</h1>
+          <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">Rechercher des Articles</h1>
           
           <SearchForm
             query={query}
@@ -86,7 +86,7 @@ const SearchPage: React.FC = () => {
 
           {!isLoading && !error && noResults && query && (
             <div className="py-20 text-center">
-              <p className="text-lg font-medium">Aucun résultat trouvé pour "{query}"</p>
+              <p className="text-lg font-medium text-gray-800">Aucun résultat trouvé pour "{query}"</p>
               <p className="mt-2 text-gray-600">Essayez avec d'autres mots-clés</p>
             </div>
           )}

@@ -16,7 +16,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ results, query }) => {
 
   return (
     <>
-      <p className="mb-4 text-gray-700">{results.length} résultats trouvés pour "{query}"</p>
+      <p className="mb-4 text-gray-800">{results.length} résultats trouvés pour "{query}"</p>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {results.slice(0, 3).map((article) => (
