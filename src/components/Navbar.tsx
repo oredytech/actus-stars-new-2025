@@ -24,7 +24,7 @@ const Navbar: React.FC = () => {
         <div className="flex items-center">
           <div className="h-12 flex items-center justify-center mr-4">
             <Link to="/" className="text-white font-bold">
-              <img src="/lovable-uploads/f8e8c16d-4fa9-4907-9f22-b589716b1360.png" alt="Actu Stars" className="h-10" />
+              <img src="/lovable-uploads/cf35211d-2e57-4cee-a4b0-e78eea63693a.png" alt="Actu Stars" className="h-10" />
             </Link>
           </div>
           <button 

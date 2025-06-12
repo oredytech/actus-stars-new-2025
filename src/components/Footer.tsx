@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
             <h3 className="text-white text-lg font-bold mb-4">A propos</h3>
             <div className="mb-4">
               <div className="w-auto h-24 flex items-center justify-start mb-4">
-                <img src="/lovable-uploads/f8e8c16d-4fa9-4907-9f22-b589716b1360.png" alt="Actu Stars" className="h-16" />
+                <img src="/lovable-uploads/cf35211d-2e57-4cee-a4b0-e78eea63693a.png" alt="Actu Stars" className="h-16" />
               </div>
               <p className="text-gray-400 text-sm">
                 Actu Stars : Votre source ultime d'actualités diversifiées sur le sport, 
@@ -57,7 +57,7 @@ const Footer: React.FC = () => {
                 {[...Array(12)].map((_, index) => (
                   <div key={index} className="flex-shrink-0 w-16 h-16 bg-gray-800 p-2 rounded flex items-center justify-center">
                     <img 
-                      src="/lovable-uploads/f8e8c16d-4fa9-4907-9f22-b589716b1360.png" 
+                      src="/lovable-uploads/cf35211d-2e57-4cee-a4b0-e78eea63693a.png" 
                       alt="Partenaire" 
                       className="h-8 w-auto opacity-70 hover:opacity-100 transition-opacity"
                     />
