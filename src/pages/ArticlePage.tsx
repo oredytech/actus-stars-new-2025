@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Eye } from 'lucide-react';
@@ -19,11 +18,23 @@ import {
 } from '../services/wordpressService';
 import { toast } from '../components/ui/use-toast';
 
+// Plugin: post-views-counter/post-views-counter.php, Fonction: views
+export function usePostViewsCounterViews() {
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    fetch("/wp-json/otapi/v1/post-views-counter/views")
+      .then(res => res.json())
+      .then(setData);
+  }, []);
+  return data;
+}
+
 const ArticlePage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const [article, setArticle] = useState<WordPressArticle | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const viewsData = usePostViewsCounterViews();
 
   useEffect(() => {
     const loadArticle = async () => {
@@ -144,7 +155,7 @@ const ArticlePage: React.FC = () => {
                   </div>
                 </header>
                 
-                <div className="mb-8 rounded-lg overflow-hidden max-h-[500px]">
+                <div className="mb-4 rounded-lg overflow-hidden max-h-[500px]">
                   <img 
                     src={getArticleImage(article)} 
                     alt={article.title.rendered}
@@ -154,6 +165,13 @@ const ArticlePage: React.FC = () => {
                     }}
                   />
                 </div>
+
+                {viewsData && (
+                  <div className="mb-8 flex items-center justify-center text-gray-400 text-sm">
+                    <Eye className="mr-2 h-4 w-4" />
+                    <span>{viewsData} vues</span>
+                  </div>
+                )}
                 
                 <div className="prose prose-invert prose-md max-w-none">
                   {article.content && (
