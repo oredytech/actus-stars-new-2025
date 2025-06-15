@@ -11,7 +11,7 @@ interface TeamMemberProps {
 
 const TeamMember: React.FC<TeamMemberProps> = ({ name, role, image, fallback }) => {
   return (
-    <div className="bg-black/70 rounded-md text-center border border-mdh-red/20 overflow-hidden relative">
+    <div className="bg-black/70 rounded-md text-center border border-mdh-red/20 overflow-hidden relative h-64 md:h-80 lg:h-96">
       <div className="w-full h-full relative">
         <Avatar className="w-full h-full rounded-none">
           <AvatarImage src={image} alt={name} className="object-cover w-full h-full" />
