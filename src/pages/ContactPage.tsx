@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
+
 const ContactPage: React.FC = () => {
   const {
     register,
@@ -74,9 +75,8 @@ const ContactPage: React.FC = () => {
               
               <div className="mt-8">
                 <h2 className="text-2xl font-bold text-mdh-gold mb-4">Heures d'ouverture</h2>
-                <p className="text-gray-300">Lundi - Vendredi: 8h00 - 18h00</p>
-                <p className="text-gray-300">Samedi: 9h00 - 15h00</p>
-                <p className="text-gray-300">Dimanche: Fermé</p>
+                <p className="text-gray-300">24h/24 et 7j/7</p>
+                <p className="text-gray-300 text-sm mt-2">Notre équipe est disponible en permanence pour vous servir</p>
               </div>
             </div>
             
@@ -138,4 +138,5 @@ const ContactPage: React.FC = () => {
       <Footer />
     </div>;
 };
+
 export default ContactPage;
