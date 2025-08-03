@@ -60,11 +60,12 @@ const ArticlePage: React.FC = () => {
           setArticle(fetchedArticle);
           document.title = `MDHTV - ${fetchedArticle.title.rendered}`;
         } else {
-          throw new Error("Article non trouvé");
+          setError("Article non trouvé");
+          console.warn(`Article with slug "${slug}" not found`);
         }
       } catch (err) {
         console.error('Error loading article:', err);
-        setError(err instanceof Error ? err.message : "Erreur lors du chargement de l'article");
+        setError("Erreur lors du chargement de l'article");
         toast({
           title: "Erreur",
           description: "Impossible de charger l'article. Veuillez réessayer.",

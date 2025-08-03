@@ -16,10 +16,25 @@ export const fetchLatestArticles = async (count: number = 5): Promise<WordPressA
 
 export const fetchArticleBySlug = async (slug: string): Promise<WordPressArticle | null> => {
   try {
+    // Nettoyer le slug - enlever les caractères spéciaux et limiter la longueur
+    const cleanSlug = slug.replace(/^\/+|\/+$/g, '').substring(0, 200);
+    
     const response = await axios.get(
-      `https://actustars.net/wp-json/wp/v2/posts?_embed&slug=${slug}`
+      `https://actustars.net/wp-json/wp/v2/posts?_embed&slug=${encodeURIComponent(cleanSlug)}`,
+      {
+        timeout: 10000,
+        headers: {
+          'Accept': 'application/json',
+        }
+      }
     );
-    return response.data[0] || null;
+    
+    // Vérifier que la réponse est bien un array
+    if (Array.isArray(response.data) && response.data.length > 0) {
+      return response.data[0];
+    }
+    
+    return null;
   } catch (error) {
     console.error(`Error fetching article with slug ${slug}:`, error);
     return null;
