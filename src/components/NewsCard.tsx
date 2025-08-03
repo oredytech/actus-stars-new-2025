@@ -1,7 +1,8 @@
 
 import React from 'react';
-import { Play } from 'lucide-react';
+import { Play, Eye } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import OtViews from '../utils/otSiteStats';
 
 interface NewsCardProps {
   title: string;
@@ -52,7 +53,15 @@ const NewsCard: React.FC<NewsCardProps> = ({
       <div className="p-3">
         <h3 className="text-white text-sm md:text-base font-bold mb-2 hover:text-mdh-gold">{title}</h3>
         {excerpt && <p className="text-gray-300 text-xs mb-3">{excerpt}</p>}
-        <span className="lire-plus">Lire Plus...</span>
+        <div className="flex justify-between items-center">
+          <span className="lire-plus">Lire Plus...</span>
+          {id && (
+            <div className="flex items-center text-gray-400 text-xs">
+              <Eye size={14} className="mr-1" />
+              <OtViews postId={id} />
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

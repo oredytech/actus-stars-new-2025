@@ -44,11 +44,7 @@ const OtViews: React.FC<Props> = ({ slug, postId }) => {
   if (!resolvedId) return <span>Chargement…</span>;
   if (views === null) return <span>Chargement des vues…</span>;
 
-  return (
-    <div className="ot-views">
-      <strong>Nombre de vues :</strong> {views}
-    </div>
-  );
+  return <span>{views}</span>;
 };
 
 export default OtViews;
