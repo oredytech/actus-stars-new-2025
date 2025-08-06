@@ -7,6 +7,7 @@ import ArticleContent from '../components/ArticleContent';
 import ArticleSidebar from '../components/article/ArticleSidebar';
 import SimilarArticlesSection from '../components/article/SimilarArticlesSection';
 import LoadingSpinner from '../components/LoadingSpinner';
+import OtStatsViews from '../components/article/OtStatsViews';
 import { 
   fetchArticleBySlug, 
   WordPressArticle, 
@@ -156,7 +157,7 @@ const ArticlePage: React.FC = () => {
                   </div>
                 </header>
                 
-                <div className="mb-4 rounded-lg overflow-hidden max-h-[500px]">
+                <div className="relative mb-4 rounded-lg overflow-hidden max-h-[500px]">
                   <img 
                     src={getArticleImage(article)} 
                     alt={article.title.rendered}
@@ -165,6 +166,9 @@ const ArticlePage: React.FC = () => {
                       (e.target as HTMLImageElement).src = 'https://picsum.photos/800/400?grayscale';
                     }}
                   />
+                  <div className="absolute top-4 right-4 bg-black/70 rounded-lg px-3 py-2">
+                    <OtStatsViews postId={article.id} className="text-white text-sm" />
+                  </div>
                 </div>
 
                 {viewsData && (
